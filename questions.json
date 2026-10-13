@@ -1,8 +1,7 @@
 [
   {
     "id": "A1-MC-001",
-    "theme": "Theme A",
-    "topic": "A.1 Kinematics",
+    "topic": "A.1",
     "paper": "1A",
     "level": "SL",
     "marks": 1,
@@ -13,12 +12,11 @@
       "$2gh$",
       "$gh^2$"
     ],
-    "solution": "B — From $v^2 = u^2 + 2as$ with $u=0$ and $s=h$, we obtain $v = \\sqrt{2gh}$."
+    "solution": "B — Using $v^2 = u^2 + 2as$ with $u = 0$ and $s = h \\implies v = \\sqrt{2gh}$."
   },
   {
     "id": "A1-STR-001",
-    "theme": "Theme A",
-    "topic": "A.1 Kinematics",
+    "topic": "A.1",
     "paper": "1B",
     "level": "HL",
     "marks": 5,
@@ -28,8 +26,7 @@
   },
   {
     "id": "A2-MC-001",
-    "theme": "Theme A",
-    "topic": "A.2 Forces and momentum",
+    "topic": "A.2",
     "paper": "1A",
     "level": "SL",
     "marks": 1,
@@ -43,20 +40,8 @@
     "solution": "C — Since the block remains at rest (static equilibrium), the net horizontal force is zero: $f_s = F$."
   },
   {
-    "id": "D1-STR-001",
-    "theme": "Theme D",
-    "topic": "D.1 Gravitational fields",
-    "paper": "2",
-    "level": "HL",
-    "marks": 6,
-    "text": "A satellite orbits a planet of mass $M$ in a circular path of radius $r$ with orbital period $T$.<br><br><b>(a)</b> Derive an expression for $T^2$ in terms of $G, M,$ and $r$. <i>[3 marks]</i><br><b>(b)</b> Explain why the gravitational force does no work on the satellite during this circular motion. <i>[3 marks]</i>",
-    "choices": [],
-    "solution": "(a) Gravitational force provides centripetal acceleration: $\\frac{GMm}{r^2} = m\\omega^2 r = m\\left(\\frac{2\\pi}{T}\\right)^2 r \\implies T^2 = \\frac{4\\pi^2 r^3}{GM}$.<br>(b) The gravitational force acts radially inwards while velocity is tangential ($F \\perp v$). Since $\\theta = 90^\\circ$, $W = Fd\\cos 90^\\circ = 0$."
-  },
-  {
     "id": "B3-MC-001",
-    "theme": "Theme B",
-    "topic": "B.3 Gas laws",
+    "topic": "B.3",
     "paper": "1A",
     "level": "SL",
     "marks": 1,
@@ -71,19 +56,27 @@
   },
   {
     "id": "C1-STR-001",
-    "theme": "Theme C",
-    "topic": "C.1 Simple harmonic motion",
+    "topic": "C.1",
     "paper": "1B",
     "level": "SL/HL",
     "marks": 4,
     "text": "A mass-spring oscillator executes simple harmonic motion along a horizontal surface with amplitude $A = 0.080\\text{ m}$ and angular frequency $\\omega = 12\\text{ rad s}^{-1}$.<br><br><b>(a)</b> Calculate the maximum acceleration $a_{\\text{max}}$ experienced by the oscillating mass. <i>[2 marks]</i><br><b>(b)</b> Determine the speed of the mass when its displacement from equilibrium is $x = 0.050\\text{ m}$. <i>[2 marks]</i>",
     "choices": [],
-    "solution": "(a) $a_{\\text{max}} = \\omega^2 A = (12)^2 \\times 0.080 = 144 \\times 0.080 = 11.5\\text{ m s}^{-2}$.<br>(b) $v = \\omega \\sqrt{A^2 - x^2} = 12 \\sqrt{0.080^2 - 0.050^2} = 12 \\sqrt{0.0064 - 0.0025} = 12 \\sqrt{0.0039} \\approx 0.75\\text{ m s}^{-1}$."
+    "solution": "(a) $a_{\\text{max}} = \\omega^2 A = (12)^2 \\times 0.080 = 11.5\\text{ m s}^{-2}$.<br>(b) $v = \\omega \\sqrt{A^2 - x^2} = 12 \\sqrt{0.080^2 - 0.050^2} \\approx 0.75\\text{ m s}^{-1}$."
+  },
+  {
+    "id": "D1-STR-001",
+    "topic": "D.1",
+    "paper": "2",
+    "level": "HL",
+    "marks": 6,
+    "text": "A satellite orbits a planet of mass $M$ in a circular path of radius $r$ with orbital period $T$.<br><br><b>(a)</b> Derive an expression for $T^2$ in terms of $G, M,$ and $r$. <i>[3 marks]</i><br><b>(b)</b> Explain why the gravitational force does no work on the satellite during this circular motion. <i>[3 marks]</i>",
+    "choices": [],
+    "solution": "(a) Centripetal force equals gravitational force: $\\frac{GMm}{r^2} = m\\left(\\frac{2\\pi}{T}\\right)^2 r \\implies T^2 = \\frac{4\\pi^2 r^3}{GM}$.<br>(b) Gravitational force is perpendicular to instantaneous displacement ($F \\perp v$), so $W = Fd\\cos 90^\\circ = 0$."
   },
   {
     "id": "D2-MC-001",
-    "theme": "Theme D",
-    "topic": "D.2 Electric and magnetic fields",
+    "topic": "D.2",
     "paper": "1A",
     "level": "HL",
     "marks": 1,
@@ -94,17 +87,16 @@
       "It deflects downwards following a circular arc",
       "It continues in a straight line with increasing speed"
     ],
-    "solution": "B — By the right-hand rule for the magnetic force $\\vec{F} = q(\\vec{v} \\times \\vec{B})$, a positive charge moving rightward in a field directed into the page experiences an upward force perpendicular to velocity, leading to circular motion at constant speed."
+    "solution": "B — By the right-hand rule, $\\vec{F} = q(\\vec{v} \\times \\vec{B})$ provides a centripetal force directed upwards, resulting in a circular arc."
   },
   {
     "id": "E3-STR-001",
-    "theme": "Theme E",
-    "topic": "E.3 Radioactive decay",
+    "topic": "E.3",
     "paper": "2",
     "level": "SL/HL",
     "marks": 5,
     "text": "A sample contains $N_0 = 4.8 \\times 10^{18}$ nuclei of a radioactive isotope with a half-life of $T_{1/2} = 6.0\\text{ hours}$.<br><br><b>(a)</b> Show that the decay constant $\\lambda$ of this isotope is approximately $3.2 \\times 10^{-5}\\text{ s}^{-1}$. <i>[2 marks]</i><br><b>(b)</b> Calculate the initial activity $A_0$ of the sample in becquerels (Bq). <i>[2 marks]</i><br><b>(c)</b> State the number of undecayed nuclei remaining after $24\\text{ hours}$. <i>[1 mark]</i>",
     "choices": [],
-    "solution": "(a) $\\lambda = \\frac{\\ln 2}{T_{1/2}} = \\frac{0.693}{6.0 \\times 3600\\text{ s}} = \\frac{0.693}{21600} \\approx 3.21 \\times 10^{-5}\\text{ s}^{-1}$.<br>(b) $A_0 = \\lambda N_0 = (3.21 \\times 10^{-5}\\text{ s}^{-1})(4.8 \\times 10^{18}) \\approx 1.54 \\times 10^{14}\\text{ Bq}$.<br>(c) $24\\text{ hours} = 4\\text{ half-lives}$. $N = \\frac{N_0}{2^4} = \\frac{4.8 \\times 10^{18}}{16} = 3.0 \\times 10^{17}\\text{ nuclei}$."
+    "solution": "(a) $\\lambda = \\frac{\\ln 2}{T_{1/2}} = \\frac{0.693}{21600\\text{ s}} \\approx 3.21 \\times 10^{-5}\\text{ s}^{-1}$.<br>(b) $A_0 = \\lambda N_0 = 3.21 \\times 10^{-5} \\times 4.8 \\times 10^{18} \\approx 1.54 \\times 10^{14}\\text{ Bq}$.<br>(c) $24\\text{ hours} = 4\\text{ half-lives} \\implies N = \\frac{N_0}{2^4} = 3.0 \\times 10^{17}$."
   }
 ]
