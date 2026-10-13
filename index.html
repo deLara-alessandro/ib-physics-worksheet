@@ -32,29 +32,27 @@
         </div>
       </div>
 
-      <!-- HIERARCHICAL FILTERS: 1. THEME -> 2. TOPIC -> 3. PAPER -->
+      <!-- MULTI-SELECT HIERARCHICAL FILTERS -->
       <div class="search-filter-box" style="display:flex; flex-direction:column; gap:8px;">
-        <!-- Step 1: Theme -->
-        <div style="display:flex; gap:6px;">
-          <select id="filterTheme" onchange="onThemeFilterChange()" style="flex:1;">
-            <option value="ALL">All Themes</option>
-            <option value="A">Theme A: Space, time and motion</option>
-            <option value="B">Theme B: Particulate nature of matter</option>
-            <option value="C">Theme C: Wave behaviour</option>
-            <option value="D">Theme D: Fields</option>
-            <option value="E">Theme E: Nuclear & quantum physics</option>
-          </select>
+        <!-- Header & Quick Toggles -->
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px; font-weight:700; color:#475569;">Filter Syllabus</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn btn-secondary" style="padding:2px 6px; font-size:11px;" onclick="selectAllFilters(true)">Select All</button>
+            <button type="button" class="btn btn-secondary" style="padding:2px 6px; font-size:11px;" onclick="selectAllFilters(false)">Clear</button>
+          </div>
         </div>
 
-        <div style="display:flex; gap:6px;">
-          <!-- Step 2: Topic (Dynamically filtered by Theme) -->
-          <select id="filterTopic" onchange="renderQuestionList()" style="flex:1;">
-            <option value="ALL">All Topics</option>
-          </select>
+        <!-- Scrollable Accordion Checklist for Themes & Topics -->
+        <div id="syllabusTreeContainer" style="max-height:190px; overflow-y:auto; border:1px solid var(--border-line); border-radius:6px; background:#fff; padding:6px;">
+          <!-- Dynamically populated by app.js -->
+        </div>
 
-          <!-- Step 3: Paper -->
-          <select id="filterPaper" onchange="renderQuestionList()" style="width:120px;">
-            <option value="ALL">All Papers</option>
+        <!-- Paper Filter -->
+        <div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
+          <label style="font-size:12px; font-weight:600; color:#475569;">Paper:</label>
+          <select id="filterPaper" onchange="renderQuestionList()" style="flex:1;">
+            <option value="ALL">All Papers (1A, 1B, 2)</option>
             <option value="1A">Paper 1A</option>
             <option value="1B">Paper 1B</option>
             <option value="2">Paper 2</option>
@@ -155,7 +153,7 @@
       </div>
 
       <div id="mcOptionsGroup">
-        <label style="font-weight:600; font-size:13px; margin-bottom:4px; display:block;">Options (Just enter the choices without typing 'A.', 'B.', etc.)</label>
+        <label style="font-weight:600; font-size:13px; margin-bottom:4px; display:block;">Options (Just enter text without typing 'A.', 'B.', etc.)</label>
         <div class="form-group"><input type="text" id="optA" placeholder="Option A text"></div>
         <div class="form-group"><input type="text" id="optB" placeholder="Option B text"></div>
         <div class="form-group"><input type="text" id="optC" placeholder="Option C text"></div>
