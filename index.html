@@ -32,22 +32,34 @@
         </div>
       </div>
 
-      <!-- FILTERS -->
-      <div class="search-filter-box">
-        <select id="filterTheme" onchange="renderQuestionList()" style="flex:1;">
-          <option value="ALL">All Themes</option>
-          <option value="Theme A">Theme A: Space, time and motion</option>
-          <option value="Theme B">Theme B: Particulate nature of matter</option>
-          <option value="Theme C">Theme C: Wave behaviour</option>
-          <option value="Theme D">Theme D: Fields</option>
-          <option value="Theme E">Theme E: Nuclear & quantum physics</option>
-        </select>
-        <select id="filterPaper" onchange="renderQuestionList()">
-          <option value="ALL">All Papers</option>
-          <option value="1A">Paper 1A</option>
-          <option value="1B">Paper 1B</option>
-          <option value="2">Paper 2</option>
-        </select>
+      <!-- HIERARCHICAL FILTERS: 1. THEME -> 2. TOPIC -> 3. PAPER -->
+      <div class="search-filter-box" style="display:flex; flex-direction:column; gap:8px;">
+        <!-- Step 1: Theme -->
+        <div style="display:flex; gap:6px;">
+          <select id="filterTheme" onchange="onThemeFilterChange()" style="flex:1;">
+            <option value="ALL">All Themes</option>
+            <option value="Theme A">Theme A: Space, time and motion</option>
+            <option value="Theme B">Theme B: Particulate nature of matter</option>
+            <option value="Theme C">Theme C: Wave behaviour</option>
+            <option value="Theme D">Theme D: Fields</option>
+            <option value="Theme E">Theme E: Nuclear & quantum physics</option>
+          </select>
+        </div>
+
+        <div style="display:flex; gap:6px;">
+          <!-- Step 2: Topic (Populated dynamically from selected Theme) -->
+          <select id="filterTopic" onchange="renderQuestionList()" style="flex:1;">
+            <option value="ALL">All Topics</option>
+          </select>
+
+          <!-- Step 3: Paper -->
+          <select id="filterPaper" onchange="renderQuestionList()" style="width:120px;">
+            <option value="ALL">All Papers</option>
+            <option value="1A">Paper 1A</option>
+            <option value="1B">Paper 1B</option>
+            <option value="2">Paper 2</option>
+          </select>
+        </div>
       </div>
 
       <!-- QUESTIONS SELECTION LIST -->
@@ -58,7 +70,7 @@
     <div class="preview-canvas">
       <div class="exam-sheet">
         
-        <!-- HEADER AT MAXIMUM TOP -->
+        <!-- HEADER AT MAXIMUM TOP (EDGE-TO-EDGE) -->
         <div class="header-banner">
           <img src="EARJ90_header.png" alt="EARJ Header" onerror="this.style.display='none'">
         </div>
