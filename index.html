@@ -2,21 +2,179 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IB DP Physics Question Bank</title>
-  
-  <!-- External CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IB DP Physics Question Bank & Worksheet Generator</title>
+
+  <!-- External Stylesheet -->
   <link rel="stylesheet" href="style.css">
-  
-  <!-- KaTeX -->
+
+  <!-- KaTeX for rapid LaTeX Math rendering -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
-  <!-- Clean HTML layout -->
-  ...
 
-  <!-- External JavaScript Logic -->
+  <div class="app-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="margin:0; font-size:16px; color:var(--ib-blue);">IB Physics Bank</h3>
+          <button class="btn btn-primary" onclick="window.print()">Print / PDF</button>
+        </div>
+        <div style="display:flex; gap:6px; margin-top:10px;">
+          <button class="btn btn-secondary" onclick="openAddModal()">+ New Question</button>
+          <button class="btn btn-secondary" onclick="exportJSON()">Export</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">Import</button>
+          <input type="file" id="importFile" style="display:none;" onchange="importJSON(event)">
+        </div>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="search-filter-box">
+        <select id="filterTheme" onchange="renderQuestionList()" style="flex:1;">
+          <option value="ALL">All Themes</option>
+          <option value="Theme A">Theme A: Space, time and motion</option>
+          <option value="Theme B">Theme B: Particulate nature of matter</option>
+          <option value="Theme C">Theme C: Wave behaviour</option>
+          <option value="Theme D">Theme D: Fields</option>
+          <option value="Theme E">Theme E: Nuclear & quantum physics</option>
+        </select>
+        <select id="filterPaper" onchange="renderQuestionList()">
+          <option value="ALL">All Papers</option>
+          <option value="1A">Paper 1A</option>
+          <option value="1B">Paper 1B</option>
+          <option value="2">Paper 2</option>
+        </select>
+      </div>
+
+      <!-- QUESTIONS SELECTION LIST -->
+      <div class="question-list" id="qListContainer"></div>
+    </div>
+
+    <!-- RIGHT WORKSHEET PREVIEW -->
+    <div class="preview-canvas">
+      <div class="exam-sheet">
+        
+        <!-- HEADER AT MAXIMUM TOP -->
+        <div class="header-banner">
+          <img src="EARJ90_header.png" alt="EARJ Header" onerror="this.style.display='none'">
+        </div>
+
+        <div class="title-area">
+          <h1 class="editable-field" contenteditable="true">Physics Problem Set</h1>
+          <h2 class="editable-field" contenteditable="true" id="sheetTitle">Mechanics & Fields Review</h2>
+          <p>Updated: <span class="editable-field" contenteditable="true" id="sheetDate">October 13th, 2026</span></p>
+          <p class="editable-field" contenteditable="true" id="sheetAuthor">Mr. Alessandro de Lara &mdash; Physics SL &amp; HL &mdash; Science Department</p>
+        </div>
+
+        <div class="instruction-box">
+          <strong>Instructions & Guidelines:</strong>
+          <ul style="margin: 4px 0 0 16px; padding: 0;">
+            <li>Refer to your <i>Physics Data Booklet</i> for relevant equations and fundamental constants.</li>
+            <li>Calculators are permitted and encouraged for all sections.</li>
+            <li>Show all algebraic steps, full substitutions, and appropriate SI units clearly.</li>
+          </ul>
+        </div>
+
+        <div id="worksheetQuestionsContainer"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- QUESTION VIEWER MODAL -->
+  <div class="modal-overlay" id="viewerModal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
+        <h3 id="viewerTitle" style="margin:0; color:var(--ib-blue);">Question Details</h3>
+        <button onclick="closeViewerModal()" style="border:none; background:none; font-size:20px; cursor:pointer;">&times;</button>
+      </div>
+      <div id="viewerBody"></div>
+      <div style="text-align:right; margin-top:16px;">
+        <button class="btn btn-secondary" onclick="closeViewerModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW QUESTION MODAL -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal-content">
+      <h3 style="margin-top:0; color:var(--ib-blue);">Add New IB Question</h3>
+      
+      <div class="form-group">
+        <label>Question ID</label>
+        <input type="text" id="newId" placeholder="e.g. A1-MC-002">
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <div class="form-group" style="flex:1;">
+          <label>Theme</label>
+          <select id="newTheme">
+            <option value="Theme A">Theme A: Space, time and motion</option>
+            <option value="Theme B">Theme B: Particulate nature of matter</option>
+            <option value="Theme C">Theme C: Wave behaviour</option>
+            <option value="Theme D">Theme D: Fields</option>
+            <option value="Theme E">Theme E: Nuclear & quantum physics</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label>Topic</label>
+          <input type="text" id="newTopic" placeholder="e.g. A.1 Kinematics">
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <div class="form-group" style="flex:1;">
+          <label>Paper</label>
+          <select id="newPaper" onchange="toggleOptionFields()">
+            <option value="1A">Paper 1A (Multiple Choice)</option>
+            <option value="1B">Paper 1B (Data/Analysis)</option>
+            <option value="2">Paper 2 (Structured)</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label>Level</label>
+          <select id="newLevel">
+            <option value="SL">SL</option>
+            <option value="HL">HL</option>
+            <option value="SL/HL">SL/HL</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label>Total Marks</label>
+          <input type="number" id="newMarks" value="1" min="1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Question Statement (Supports LaTeX with $...$ or $$...$$)</label>
+        <textarea id="newText" rows="4" placeholder="An object moves with constant acceleration $a = 2.0\text{ m s}^{-2}$..."></textarea>
+      </div>
+
+      <div id="mcOptionsGroup">
+        <label style="font-weight:600; font-size:13px; margin-bottom:4px; display:block;">Options (A, B, C, D)</label>
+        <div class="form-group"><input type="text" id="optA" placeholder="Option A"></div>
+        <div class="form-group"><input type="text" id="optB" placeholder="Option B"></div>
+        <div class="form-group"><input type="text" id="optC" placeholder="Option C"></div>
+        <div class="form-group"><input type="text" id="optD" placeholder="Option D"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Mark Scheme / Solution</label>
+        <textarea id="newSolution" rows="2" placeholder="Full markscheme solution or correct option letter..."></textarea>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
+        <button class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
+        <button class="btn btn-success" onclick="saveNewQuestion()">Save Question</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Application Logic -->
   <script src="app.js"></script>
 </body>
 </html>
