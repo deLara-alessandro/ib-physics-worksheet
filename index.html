@@ -65,7 +65,7 @@
 
         <div class="title-area">
           <h1 class="editable-field" contenteditable="true">Physics Problem Set</h1>
-          <h2 class="editable-field" contenteditable="true" id="sheetTitle">Mechanics & Fields Review</h2>
+          <h2 class="editable-field" contenteditable="true" id="sheetTitle">Mechanics &amp; Fields Review</h2>
           <p>Updated: <span class="editable-field" contenteditable="true" id="sheetDate">October 13th, 2026</span></p>
           <p class="editable-field" contenteditable="true" id="sheetAuthor">Mr. Alessandro de Lara &mdash; Physics SL &amp; HL &mdash; Science Department</p>
         </div>
@@ -73,9 +73,9 @@
         <div class="instruction-box">
           <strong>Instructions & Guidelines:</strong>
           <ul style="margin: 4px 0 0 16px; padding: 0;">
-            <li>Refer to your <i>Physics Data Booklet</i> for relevant equations and fundamental constants.</li>
+            <li>Refer to your <i>Physics Data Booklet</i> for essential equations and fundamental constants.</li>
             <li>Calculators are permitted and encouraged for all sections.</li>
-            <li>Show all algebraic steps, full substitutions, and appropriate SI units clearly.</li>
+            <li>Show all algebraic steps, numerical substitutions, and appropriate SI units clearly.</li>
           </ul>
         </div>
 
@@ -109,21 +109,9 @@
         <input type="text" id="newId" placeholder="e.g. A1-MC-002">
       </div>
 
-      <div style="display:flex; gap:10px;">
-        <div class="form-group" style="flex:1;">
-          <label>Theme</label>
-          <select id="newTheme">
-            <option value="Theme A">Theme A: Space, time and motion</option>
-            <option value="Theme B">Theme B: Particulate nature of matter</option>
-            <option value="Theme C">Theme C: Wave behaviour</option>
-            <option value="Theme D">Theme D: Fields</option>
-            <option value="Theme E">Theme E: Nuclear & quantum physics</option>
-          </select>
-        </div>
-        <div class="form-group" style="flex:1;">
-          <label>Topic</label>
-          <input type="text" id="newTopic" placeholder="e.g. A.1 Kinematics">
-        </div>
+      <div class="form-group">
+        <label>Syllabus Topic</label>
+        <select id="newTopicCode"></select>
       </div>
 
       <div style="display:flex; gap:10px;">
@@ -150,21 +138,21 @@
       </div>
 
       <div class="form-group">
-        <label>Question Statement (Supports LaTeX with $...$ or $$...$$)</label>
+        <label>Question Statement (LaTeX supported via $...$ or $$...$$)</label>
         <textarea id="newText" rows="4" placeholder="An object moves with constant acceleration $a = 2.0\text{ m s}^{-2}$..."></textarea>
       </div>
 
       <div id="mcOptionsGroup">
-        <label style="font-weight:600; font-size:13px; margin-bottom:4px; display:block;">Options (A, B, C, D)</label>
-        <div class="form-group"><input type="text" id="optA" placeholder="Option A"></div>
-        <div class="form-group"><input type="text" id="optB" placeholder="Option B"></div>
-        <div class="form-group"><input type="text" id="optC" placeholder="Option C"></div>
-        <div class="form-group"><input type="text" id="optD" placeholder="Option D"></div>
+        <label style="font-weight:600; font-size:13px; margin-bottom:4px; display:block;">Options (Just enter the choices without typing 'A.', 'B.', etc.)</label>
+        <div class="form-group"><input type="text" id="optA" placeholder="Option A text"></div>
+        <div class="form-group"><input type="text" id="optB" placeholder="Option B text"></div>
+        <div class="form-group"><input type="text" id="optC" placeholder="Option C text"></div>
+        <div class="form-group"><input type="text" id="optD" placeholder="Option D text"></div>
       </div>
 
       <div class="form-group">
-        <label>Mark Scheme / Solution</label>
-        <textarea id="newSolution" rows="2" placeholder="Full markscheme solution or correct option letter..."></textarea>
+        <label>Mark Scheme / Worked Solution</label>
+        <textarea id="newSolution" rows="2" placeholder="Full mark scheme solution or correct option letter..."></textarea>
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
