@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IB DP Physics Question Bank & Worksheet Generator</title>
+
+  <!-- KaTeX for rapid LaTeX Math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root {
+      --ib-blue: #2572ba;
+      --ib-dark: #1e3a8a;
+      --bg-canvas: #f1f5f9;
+      --border-line: #cbd5e1;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-canvas);
+      color: #0f172a;
+    }
+
+    /* Screen UI Layout */
+    .app-container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left Control Sidebar */
+    .sidebar {
+      width: 440px;
+      background: #ffffff;
+      border-right: 1px solid var(--border-line);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header {
+      padding: 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-line);
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary { background: var(--ib-blue); color: #fff; }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-success { background: #16a34a; color: #fff; }
+
+    .search-filter-box {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-line);
+      display: flex;
+      gap: 8px;
+    }
+    .search-filter-box select, .search-filter-box input {
+      padding: 6px 10px;
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .question-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .q-bank-card {
+      padding: 10px;
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      background: #fff;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .q-bank-card:hover { border-color: var(--ib-blue); }
+
+    /* Right Preview Canvas */
+    .preview-canvas {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Standard A4 Worksheet Page */
+    .exam-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      background: #ffffff;
+      padding: 20mm;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      border-radius: 2px;
+    }
+
+    .header-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .title-area {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .title-area h1 { margin: 0; font-size: 22px; }
+    .title-area h2 { margin: 4px 0; font-size: 17px; color: var(--ib-blue); }
+    .title-area p { margin: 2px 0; font-size: 12px; color: #64748b; }
+
+    /* IB Styled Instruction Callout Box */
+    .instruction-box {
+      background: #f7fafe;
+      border: 1.5px solid var(--ib-blue);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    /* Worksheet Questions */
+    .worksheet-q {
+      margin-bottom: 26px;
+      page-break-inside: avoid;
+    }
+    .q-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+    .badge-level { background: #ebeef2; color: #334155; }
+    .badge-paper { background: var(--ib-blue); color: #fff; }
+
+    /* Ruled lines for Paper 1B & Paper 2 */
+    .answer-lines {
+      width: 100%;
+      border: 1px dashed #cbd5e1;
+      background: repeating-linear-gradient(white, white 24px, #f8fafc 25px);
+      margin-top: 10px;
+      border-radius: 4px;
+    }
+
+    /* Modal for Adding Questions */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
+      display: none; align-items: center; justify-content: center; z-index: 1000;
+    }
+    .modal-content {
+      background: #fff; width: 620px; max-height: 90vh; overflow-y: auto;
+      border-radius: 10px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 8px; border: 1px solid var(--border-line);
+      border-radius: 6px; font-size: 13px;
+    }
+
+    /* Print Setup */
+    @media print {
+      body { background: #fff; }
+      .sidebar, .modal-overlay { display: none !important; }
+      .app-container { height: auto; display: block; }
+      .preview-canvas { padding: 0; display: block; }
+      .exam-sheet { width: 100%; box-shadow: none; padding: 0; }
+      .worksheet-q { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="margin:0; font-size:16px; color:var(--ib-blue);">IB Physics Bank</h3>
+          <button class="btn btn-primary" onclick="window.print()">Print / PDF</button>
+        </div>
+        <div style="display:flex; gap:6px; margin-top:10px;">
+          <button class="btn btn-secondary" onclick="openAddModal()">+ New Question</button>
+          <button class="btn btn-secondary" onclick="exportJSON()">Export JSON</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">Import</button>
+          <input type="file" id="importFile" style="display:none;" onchange="importJSON(event)">
+        </div>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="search-filter-box">
+        <select id="filterTheme" onchange="renderQuestionList()" style="flex:1;">
+          <option value="ALL">All Themes</option>
+          <option value="Theme A">Theme A: Space, time and motion</option>
+          <option value="Theme B">Theme B: Particulate nature of matter</option>
+          <option value="Theme C">Theme C: Wave behaviour</option>
+          <option value="Theme D">Theme D: Fields</option>
+          <option value="Theme E">Theme E: Nuclear & quantum physics</option>
+        </select>
+        <select id="filterPaper" onchange="renderQuestionList()">
+          <option value="ALL">All Papers</option>
+          <option value="1A">Paper 1A</option>
+          <option value="1B">Paper 1B</option>
+          <option value="2">Paper 2</option>
+        </select>
+      </div>
+
+      <!-- SELECTION LIST -->
+      <div class="question-list" id="qListContainer"></div>
+    </div>
+
+    <!-- RIGHT PREVIEW -->
+    <div class="preview-canvas">
+      <div class="exam-sheet">
+        
+        <!-- HEADER GRAPHIC -->
+        <div class="header-banner">
+          <img src="EARJ90_header.png" alt="School Banner" onerror="this.style.display='none'">
+        </div>
+
+        <div class="title-area">
+          <h1>Physics Problem Set</h1>
+          <h2 id="sheetTitleDisplay">Mechanics & Fields Review</h2>
+          <p>Updated: <span id="currentDate"></span></p>
+          <p>Physics SL &amp; HL &mdash; Science Department</p>
+        </div>
+
+        <div class="instruction-box">
+          <strong>Instructions & Guidelines:</strong>
+          <ul style="margin: 4px 0 0 16px; padding: 0;">
+            <li>Refer to your <i>Physics Data Booklet</i> for relevant equations and constants.</li>
+            <li>Calculators are permitted for all components.</li>
+            <li>Show all algebraic steps, substitutions, and appropriate SI units.</li>
+          </ul>
+        </div>
+
+        <div id="worksheetQuestionsContainer"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ADD QUESTION MODAL -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal-content">
+      <h3 style="margin-top:0; color:var(--ib-blue);">Add New IB Question</h3>
+      
+      <div class="form-group">
+        <label>Question ID</label>
+        <input type="text" id="newId" placeholder="e.g. A1-MC-002">
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <div class="form-group" style="flex:1;">
+          <label>Theme</label>
+          <select id="newTheme">
+            <option value="Theme A">Theme A: Space, time and motion</option>
+            <option value="Theme B">Theme B: Particulate nature of matter</option>
+            <option value="Theme C">Theme C: Wave behaviour</option>
+            <option value="Theme D">Theme D: Fields</option>
+            <option value="Theme E">Theme E: Nuclear & quantum physics</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label>Topic Name</label>
+          <input type="text" id="newTopic" placeholder="e.g. A.1 Kinematics">
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <div class="form-group" style="flex:1;">
+          <label>Paper Type</label>
+          <select id="newPaper" onchange="toggleOptionFields()">
+            <option value="1A">Paper 1A (Multiple Choice)</option>
+            <option value="1B">Paper 1B (Data/Analysis)</option>
+            <option value="2">Paper 2 (Structured)</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label>Level</label>
+          <select id="newLevel">
+            <option value="SL">SL</option>
+            <option value="HL">HL</option>
+            <option value="SL/HL">SL/HL</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label>Total Marks</label>
+          <input type="number" id="newMarks" value="1" min="1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Question Statement (Supports LaTeX $...$ or $$...$$)</label>
+        <textarea id="newText" rows="4" placeholder="An object moves with acceleration $a = 2.0\text{ m s}^{-2}$..."></textarea>
+      </div>
+
+      <!-- Multiple Choice Options -->
+      <div id="mcOptionsGroup">
+        <label style="font-weight:600; font-size:13px; margin-bottom:4px; display:block;">Options (A, B, C, D)</label>
+        <div class="form-group"><input type="text" id="optA" placeholder="Option A"></div>
+        <div class="form-group"><input type="text" id="optB" placeholder="Option B"></div>
+        <div class="form-group"><input type="text" id="optC" placeholder="Option C"></div>
+        <div class="form-group"><input type="text" id="optD" placeholder="Option D"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Solution / Mark Scheme</label>
+        <textarea id="newSolution" rows="2" placeholder="Worked solution or answer letter..."></textarea>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
+        <button class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
+        <button class="btn btn-success" onclick="saveNewQuestion()">Save Question</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DEFAULT SEED DATABASE
+    const defaultDatabase = [
+      {
+        id: "A1-MC-001",
+        theme: "Theme A",
+        topic: "A.1 Kinematics",
+        paper: "1A",
+        level: "SL",
+        marks: 1,
+        text: "An object is released from rest from the top of a building of height $h$. Air resistance is negligible. What is the speed of the object immediately before striking the ground?",
+        choices: ["$\\sqrt{gh}$", "$\\sqrt{2gh}$", "$2gh$", "$gh^2$"],
+        solution: "B — Using $v^2 = u^2 + 2as \\implies v = \\sqrt{2gh}$."
+      },
+      {
+        id: "A1-STR-001",
+        theme: "Theme A",
+        topic: "A.1 Kinematics",
+        paper: "1B",
+        level: "HL",
+        marks: 5,
+        text: "A rescue package is dropped horizontally from a plane at speed $u = 25\\text{ m s}^{-1}$ from a height $h = 45\\text{ m}$.<br><br><b>(a)</b> Show that the time of flight is approximately $3.0\\text{ s}$. <i>[2 marks]</i><br><b>(b)</b> Calculate the magnitude of the velocity vector upon impact. <i>[3 marks]</i>",
+        choices: [],
+        solution: "(a) $t = \\sqrt{2h/g} = \\sqrt{90/9.81} \\approx 3.03\\text{ s}$.<br>(b) $v_y = gt = 9.81(3.03) = 29.7\\text{ m s}^{-1}$. $v = \\sqrt{25^2 + 29.7^2} \\approx 38.8\\text{ m s}^{-1}$."
+      },
+      {
+        id: "D1-STR-001",
+        theme: "Theme D",
+        topic: "D.1 Gravitational fields",
+        paper: "2",
+        level: "HL",
+        marks: 6,
+        text: "A satellite orbits a planet of mass $M$ in a circular orbit of radius $r$ with orbital period $T$.<br><br><b>(a)</b> Derive an expression for $T^2$ in terms of $G, M,$ and $r$. <i>[3 marks]</i><br><b>(b)</b> Explain why the gravitational force does no work on the satellite during this circular motion. <i>[3 marks]</i>",
+        choices: [],
+        solution: "(a) $\\frac{GMm}{r^2} = m\\omega^2 r = m\\left(\\frac{2\\pi}{T}\\right)^2 r \\implies T^2 = \\frac{4\\pi^2 r^3}{GM}$.<br>(b) The force is perpendicular to the instantaneous displacement vector ($F \\perp v$), so $W = Fd\\cos 90^\\circ = 0$."
+      }
+    ];
+
+    // Load from localStorage or initialize defaults
+    let questions = JSON.parse(localStorage.getItem('ib_qbank')) || defaultDatabase;
+    let selectedIds = new Set(questions.map(q => q.id));
+
+    document.getElementById('currentDate').innerText = new Date().toLocaleDateString();
+
+    function renderQuestionList() {
+      const filterTheme = document.getElementById('filterTheme').value;
+      const filterPaper = document.getElementById('filterPaper').value;
+      const container = document.getElementById('qListContainer');
+      container.innerHTML = '';
+
+      const filtered = questions.filter(q => {
+        const matchesTheme = (filterTheme === 'ALL' || q.theme === filterTheme);
+        const matchesPaper = (filterPaper === 'ALL' || q.paper === filterPaper);
+        return matchesTheme && matchesPaper;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px;">No questions match filter.</p>';
+        return;
+      }
+
+      filtered.forEach(q => {
+        const card = document.createElement('div');
+        card.className = 'q-bank-card';
+        card.innerHTML = `
+          <input type="checkbox" ${selectedIds.has(q.id) ? 'checked' : ''} onchange="toggleSelect('${q.id}')">
+          <div style="flex:1; font-size:13px;">
+            <div style="display:flex; justify-content:space-between;">
+              <strong>[${q.id}]</strong>
+              <span style="color:#64748b;">${q.marks} mk</span>
+            </div>
+            <div style="color:#475569; margin:2px 0;">${q.topic} &bull; Paper ${q.paper} (${q.level})</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleSelect(id) {
+      if (selectedIds.has(id)) selectedIds.delete(id);
+      else selectedIds.add(id);
+      renderWorksheet();
+    }
+
+    function renderWorksheet() {
+      const container = document.getElementById('worksheetQuestionsContainer');
+      container.innerHTML = '';
+      let qNum = 1;
+
+      questions.forEach(q => {
+        if (!selectedIds.has(q.id)) return;
+
+        const el = document.createElement('div');
+        el.className = 'worksheet-q';
+
+        let optionsMarkup = '';
+        if (q.paper === '1A' && q.choices && q.choices.length > 0) {
+          const letters = ['A', 'B', 'C', 'D'];
+          optionsMarkup = '<ol type="A" style="margin: 8px 0 0 18px; padding: 0;">' + 
+            q.choices.map((c, i) => `<li style="margin-bottom:4px;"><b>${letters[i]}.</b> ${c}</li>`).join('') +
+            '</ol>';
+        }
+
+        let answerBoxMarkup = '';
+        if (q.paper !== '1A') {
+          // Approximate lined grid height based on marks (approx 25px per mark)
+          const boxHeight = Math.max(70, q.marks * 25);
+          answerBoxMarkup = `<div class="answer-lines" style="height:${boxHeight}px;"></div>`;
+        }
+
+        el.innerHTML = `
+          <div class="q-header-row">
+            <div>
+              <strong>Q${qNum}.</strong>
+              <span class="badge badge-level">${q.level}</span>
+              <span class="badge badge-paper">Paper ${q.paper}</span>
+            </div>
+            <span style="font-size:12px; font-style:italic; color:#475569;">[${q.marks} mark${q.marks > 1 ? 's' : ''}]</span>
+          </div>
+          <div style="font-size:14px; line-height:1.5;">${q.text}</div>
+          ${optionsMarkup}
+          ${answerBoxMarkup}
+        `;
+
+        container.appendChild(el);
+        qNum++;
+      });
+
+      renderMath();
+    }
+
+    function renderMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.getElementById('worksheetQuestionsContainer'), {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ]
+        });
+      }
+    }
+
+    // Modal and Question Management
+    function openAddModal() {
+      document.getElementById('addModal').style.display = 'flex';
+    }
+    function closeAddModal() {
+      document.getElementById('addModal').style.display = 'none';
+    }
+    function toggleOptionFields() {
+      const p = document.getElementById('newPaper').value;
+      document.getElementById('mcOptionsGroup').style.display = (p === '1A') ? 'block' : 'none';
+      if (p === '1A') document.getElementById('newMarks').value = 1;
+    }
+
+    function saveNewQuestion() {
+      const id = document.getElementById('newId').value.trim() || 'Q-' + Date.now();
+      const theme = document.getElementById('newTheme').value;
+      const topic = document.getElementById('newTopic').value.trim() || 'General Physics';
+      const paper = document.getElementById('newPaper').value;
+      const level = document.getElementById('newLevel').value;
+      const marks = parseInt(document.getElementById('newMarks').value, 10) || 1;
+      const text = document.getElementById('newText').value.trim();
+      const solution = document.getElementById('newSolution').value.trim();
+
+      let choices = [];
+      if (paper === '1A') {
+        choices = [
+          document.getElementById('optA').value.trim(),
+          document.getElementById('optB').value.trim(),
+          document.getElementById('optC').value.trim(),
+          document.getElementById('optD').value.trim()
+        ];
+      }
+
+      if (!text) {
+        alert("Please enter the question statement.");
+        return;
+      }
+
+      const newQ = { id, theme, topic, paper, level, marks, text, choices, solution };
+      questions.push(newQ);
+      selectedIds.add(newQ.id);
+
+      localStorage.setItem('ib_qbank', JSON.stringify(questions));
+      closeAddModal();
+      renderQuestionList();
+      renderWorksheet();
+    }
+
+    // JSON Export / Import
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(questions, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'ib_physics_questions.json';
+      a.click();
+    }
+
+    function importJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const imported = JSON.parse(evt.target.result);
+          if (Array.isArray(imported)) {
+            questions = imported;
+            selectedIds = new Set(questions.map(q => q.id));
+            localStorage.setItem('ib_qbank', JSON.stringify(questions));
+            renderQuestionList();
+            renderWorksheet();
+            alert('Question bank imported successfully!');
+          }
+        } catch(err) {
+          alert('Invalid JSON file format.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Initial load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderQuestionList();
+      renderWorksheet();
+    });
+  </script>
+</body>
+</html>
