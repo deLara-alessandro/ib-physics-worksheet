@@ -1,48 +1,48 @@
 // Complete 2025 IB Physics Syllabus Content Overview Dictionary
 const SYLLABUS_DB = {
   // Theme A: Space, time and motion
-  "A.1": { code: "A.1", theme: "Theme A", themeName: "Space, time and motion", name: "Kinematics" },
-  "A.2": { code: "A.2", theme: "Theme A", themeName: "Space, time and motion", name: "Forces and momentum" },
-  "A.3": { code: "A.3", theme: "Theme A", themeName: "Space, time and motion", name: "Work, energy and power" },
-  "A.4": { code: "A.4", theme: "Theme A", themeName: "Space, time and motion", name: "Rigid body mechanics (HL)" },
-  "A.5": { code: "A.5", theme: "Theme A", themeName: "Space, time and motion", name: "Galilean and special relativity (HL)" },
+  "A.1": { code: "A.1", themeLetter: "A", name: "Kinematics" },
+  "A.2": { code: "A.2", themeLetter: "A", name: "Forces and momentum" },
+  "A.3": { code: "A.3", themeLetter: "A", name: "Work, energy and power" },
+  "A.4": { code: "A.4", themeLetter: "A", name: "Rigid body mechanics (HL)" },
+  "A.5": { code: "A.5", themeLetter: "A", name: "Galilean and special relativity (HL)" },
 
   // Theme B: The particulate nature of matter
-  "B.1": { code: "B.1", theme: "Theme B", themeName: "The particulate nature of matter", name: "Thermal energy transfers" },
-  "B.2": { code: "B.2", theme: "Theme B", themeName: "The particulate nature of matter", name: "Greenhouse effect" },
-  "B.3": { code: "B.3", theme: "Theme B", themeName: "The particulate nature of matter", name: "Gas laws" },
-  "B.4": { code: "B.4", theme: "Theme B", themeName: "The particulate nature of matter", name: "Thermodynamics (HL)" },
-  "B.5": { code: "B.5", theme: "Theme B", themeName: "The particulate nature of matter", name: "Current and circuits" },
+  "B.1": { code: "B.1", themeLetter: "B", name: "Thermal energy transfers" },
+  "B.2": { code: "B.2", themeLetter: "B", name: "Greenhouse effect" },
+  "B.3": { code: "B.3", themeLetter: "B", name: "Gas laws" },
+  "B.4": { code: "B.4", themeLetter: "B", name: "Thermodynamics (HL)" },
+  "B.5": { code: "B.5", themeLetter: "B", name: "Current and circuits" },
 
   // Theme C: Wave behaviour
-  "C.1": { code: "C.1", theme: "Theme C", themeName: "Wave behaviour", name: "Simple harmonic motion" },
-  "C.2": { code: "C.2", theme: "Theme C", themeName: "Wave behaviour", name: "Wave model" },
-  "C.3": { code: "C.3", theme: "Theme C", themeName: "Wave behaviour", name: "Wave phenomena" },
-  "C.4": { code: "C.4", theme: "Theme C", themeName: "Wave behaviour", name: "Standing waves and resonance" },
-  "C.5": { code: "C.5", theme: "Theme C", themeName: "Wave behaviour", name: "Doppler effect" },
+  "C.1": { code: "C.1", themeLetter: "C", name: "Simple harmonic motion" },
+  "C.2": { code: "C.2", themeLetter: "C", name: "Wave model" },
+  "C.3": { code: "C.3", themeLetter: "C", name: "Wave phenomena" },
+  "C.4": { code: "C.4", themeLetter: "C", name: "Standing waves and resonance" },
+  "C.5": { code: "C.5", themeLetter: "C", name: "Doppler effect" },
 
   // Theme D: Fields
-  "D.1": { code: "D.1", theme: "Theme D", themeName: "Fields", name: "Gravitational fields" },
-  "D.2": { code: "D.2", theme: "Theme D", themeName: "Fields", name: "Electric and magnetic fields" },
-  "D.3": { code: "D.3", theme: "Theme D", themeName: "Fields", name: "Motion in electromagnetic fields" },
-  "D.4": { code: "D.4", theme: "Theme D", themeName: "Fields", name: "Induction (HL)" },
+  "D.1": { code: "D.1", themeLetter: "D", name: "Gravitational fields" },
+  "D.2": { code: "D.2", themeLetter: "D", name: "Electric and magnetic fields" },
+  "D.3": { code: "D.3", themeLetter: "D", name: "Motion in electromagnetic fields" },
+  "D.4": { code: "D.4", themeLetter: "D", name: "Induction (HL)" },
 
   // Theme E: Nuclear and quantum physics
-  "E.1": { code: "E.1", theme: "Theme E", themeName: "Nuclear and quantum physics", name: "Structure of the atom" },
-  "E.2": { code: "E.2", theme: "Theme E", themeName: "Nuclear and quantum physics", name: "Quantum physics (HL)" },
-  "E.3": { code: "E.3", theme: "Theme E", themeName: "Nuclear and quantum physics", name: "Radioactive decay" },
-  "E.4": { code: "E.4", theme: "Theme E", themeName: "Nuclear and quantum physics", name: "Fission" },
-  "E.5": { code: "E.5", theme: "Theme E", themeName: "Nuclear and quantum physics", name: "Fusion and stars" }
+  "E.1": { code: "E.1", themeLetter: "E", name: "Structure of the atom" },
+  "E.2": { code: "E.2", themeLetter: "E", name: "Quantum physics (HL)" },
+  "E.3": { code: "E.3", themeLetter: "E", name: "Radioactive decay" },
+  "E.4": { code: "E.4", themeLetter: "E", name: "Fission" },
+  "E.5": { code: "E.5", themeLetter: "E", name: "Fusion and stars" }
 };
 
 // Normalizes input: handles "A1", "a1", "A.1"
 function resolveTopic(rawCode) {
-  if (!rawCode) return { code: "General", theme: "General", themeName: "General", name: "General Physics" };
+  if (!rawCode) return { code: "General", themeLetter: "Other", name: "General Physics" };
   const cleaned = rawCode.trim().toUpperCase().replace(/^([A-E])(\d)$/, "$1.$2");
-  return SYLLABUS_DB[cleaned] || { code: cleaned, theme: "General", themeName: "General", name: cleaned };
+  return SYLLABUS_DB[cleaned] || { code: cleaned, themeLetter: cleaned.charAt(0), name: cleaned };
 }
 
-// Cleans multiple choice options (strips duplicate "A.", "A)", etc.)
+// Cleans multiple-choice options (strips duplicate "A.", "A)", etc.)
 function cleanChoiceText(text) {
   if (!text) return "";
   return text.trim().replace(/^[A-Da-d][\.\)]\s*/, "");
@@ -74,12 +74,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 
   selectedIds = new Set(questions.map(q => q.id));
-  populateTopicDropdown();
+  populateTopicModalDropdown();
   onThemeFilterChange(); // Sets up Theme -> Topic -> Paper hierarchy on startup
   renderWorksheet();
 });
 
-function populateTopicDropdown() {
+// Populates topic choices inside the "Add New Question" modal
+function populateTopicModalDropdown() {
   const select = document.getElementById('newTopicCode');
   if (!select) return;
   select.innerHTML = '';
@@ -87,23 +88,25 @@ function populateTopicDropdown() {
     const item = SYLLABUS_DB[key];
     const opt = document.createElement('option');
     opt.value = item.code;
-    opt.innerText = `${item.code} ${item.name} (${item.theme})`;
+    opt.innerText = `${item.code} ${item.name} (Theme ${item.themeLetter})`;
     select.appendChild(opt);
   });
 }
 
-// Triggered when Theme filter changes: repopulates Topic dropdown dynamically
+// Triggered when Theme filter changes: updates Topic dropdown strictly to that Theme
 function onThemeFilterChange() {
-  const selectedTheme = document.getElementById('filterTheme').value;
+  const selectedThemeLetter = document.getElementById('filterTheme').value;
   const topicSelect = document.getElementById('filterTopic');
   
+  // Reset topic dropdown
   topicSelect.innerHTML = '<option value="ALL">All Topics</option>';
 
   Object.keys(SYLLABUS_DB).forEach(key => {
     const item = SYLLABUS_DB[key];
-    if (selectedTheme === 'ALL' || item.theme === selectedTheme) {
+    // Strict match: if Theme A is selected, ONLY show items where themeLetter === "A"
+    if (selectedThemeLetter === 'ALL' || item.themeLetter === selectedThemeLetter) {
       const opt = document.createElement('option');
-      opt.value = item.code;
+      opt.value = item.code; // e.g. "A.1"
       opt.innerText = `${item.code} ${item.name}`;
       topicSelect.appendChild(opt);
     }
@@ -114,7 +117,7 @@ function onThemeFilterChange() {
 
 // Filter the sidebar list: Theme -> Topic -> Paper
 function renderQuestionList() {
-  const filterTheme = document.getElementById('filterTheme').value;
+  const filterThemeLetter = document.getElementById('filterTheme').value;
   const filterTopic = document.getElementById('filterTopic').value;
   const filterPaper = document.getElementById('filterPaper').value;
   const container = document.getElementById('qListContainer');
@@ -123,8 +126,13 @@ function renderQuestionList() {
   const filtered = questions.filter(q => {
     const meta = resolveTopic(q.topic);
     
-    const matchesTheme = (filterTheme === 'ALL' || meta.theme === filterTheme);
+    // 1. Theme check
+    const matchesTheme = (filterThemeLetter === 'ALL' || meta.themeLetter === filterThemeLetter);
+    
+    // 2. Topic check
     const matchesTopic = (filterTopic === 'ALL' || meta.code === filterTopic);
+    
+    // 3. Paper check
     const matchesPaper = (filterPaper === 'ALL' || q.paper === filterPaper);
 
     return matchesTheme && matchesTopic && matchesPaper;
@@ -217,7 +225,7 @@ function renderMath() {
   }
 }
 
-// Viewer modal
+// Viewer modal to inspect question statement & mark scheme
 function openViewer(id) {
   const q = questions.find(item => item.id === id);
   if (!q) return;
@@ -306,6 +314,7 @@ function saveNewQuestion() {
   renderWorksheet();
 }
 
+// Export and Import JSON backups
 function exportJSON() {
   const blob = new Blob([JSON.stringify(questions, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
