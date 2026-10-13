@@ -42,7 +42,7 @@ function resolveTopic(rawCode) {
   return SYLLABUS_DB[cleaned] || { code: cleaned, theme: "General", themeName: "General", name: cleaned };
 }
 
-// Cleans choice strings (removes duplicate "A.", "A)", etc.)
+// Cleans multiple choice options (strips duplicate "A.", "A)", etc.)
 function cleanChoiceText(text) {
   if (!text) return "";
   return text.trim().replace(/^[A-Da-d][\.\)]\s*/, "");
@@ -75,7 +75,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   selectedIds = new Set(questions.map(q => q.id));
   populateTopicDropdown();
-  renderQuestionList();
+  onThemeFilterChange(); // Sets up Theme -> Topic -> Paper hierarchy on startup
   renderWorksheet();
 });
 
@@ -92,22 +92,46 @@ function populateTopicDropdown() {
   });
 }
 
-// Render sidebar checklist
+// Triggered when Theme filter changes: repopulates Topic dropdown dynamically
+function onThemeFilterChange() {
+  const selectedTheme = document.getElementById('filterTheme').value;
+  const topicSelect = document.getElementById('filterTopic');
+  
+  topicSelect.innerHTML = '<option value="ALL">All Topics</option>';
+
+  Object.keys(SYLLABUS_DB).forEach(key => {
+    const item = SYLLABUS_DB[key];
+    if (selectedTheme === 'ALL' || item.theme === selectedTheme) {
+      const opt = document.createElement('option');
+      opt.value = item.code;
+      opt.innerText = `${item.code} ${item.name}`;
+      topicSelect.appendChild(opt);
+    }
+  });
+
+  renderQuestionList();
+}
+
+// Filter the sidebar list: Theme -> Topic -> Paper
 function renderQuestionList() {
   const filterTheme = document.getElementById('filterTheme').value;
+  const filterTopic = document.getElementById('filterTopic').value;
   const filterPaper = document.getElementById('filterPaper').value;
   const container = document.getElementById('qListContainer');
   container.innerHTML = '';
 
   const filtered = questions.filter(q => {
     const meta = resolveTopic(q.topic);
+    
     const matchesTheme = (filterTheme === 'ALL' || meta.theme === filterTheme);
+    const matchesTopic = (filterTopic === 'ALL' || meta.code === filterTopic);
     const matchesPaper = (filterPaper === 'ALL' || q.paper === filterPaper);
-    return matchesTheme && matchesPaper;
+
+    return matchesTheme && matchesTopic && matchesPaper;
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px;">No questions found.</p>';
+    container.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px; margin-top:20px;">No questions found.</p>';
     return;
   }
 
@@ -233,7 +257,7 @@ function closeViewerModal() {
   document.getElementById('viewerModal').style.display = 'none';
 }
 
-// New Question Modal handlers
+// Add Question modal handlers
 function openAddModal() {
   document.getElementById('addModal').style.display = 'flex';
 }
@@ -250,7 +274,7 @@ function toggleOptionFields() {
 
 function saveNewQuestion() {
   const id = document.getElementById('newId').value.trim() || 'Q-' + Date.now();
-  const topic = document.getElementById('newTopicCode').value; // e.g. "A.1"
+  const topic = document.getElementById('newTopicCode').value;
   const paper = document.getElementById('newPaper').value;
   const level = document.getElementById('newLevel').value;
   const marks = parseInt(document.getElementById('newMarks').value, 10) || 1;
