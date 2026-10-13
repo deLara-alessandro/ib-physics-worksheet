@@ -1,0 +1,56 @@
+[
+  {
+    "id": "A1-MC-001",
+    "theme": "Theme A",
+    "topic": "A.1 Kinematics",
+    "paper": "1A",
+    "level": "SL",
+    "marks": 1,
+    "text": "An object is released from rest from the top of a building of height $h$. Air resistance is negligible. What is the speed of the object immediately before striking the ground?",
+    "choices": [
+      "$\\sqrt{gh}$",
+      "$\\sqrt{2gh}$",
+      "$2gh$",
+      "$gh^2$"
+    ],
+    "solution": "B — From $v^2 = u^2 + 2as$ with $u=0$ and $s=h$, we obtain $v = \\sqrt{2gh}$."
+  },
+  {
+    "id": "A1-STR-001",
+    "theme": "Theme A",
+    "topic": "A.1 Kinematics",
+    "paper": "1B",
+    "level": "HL",
+    "marks": 5,
+    "text": "A rescue package is dropped horizontally from an aircraft at speed $u = 25\\text{ m s}^{-1}$ from a height $h = 45\\text{ m}$.<br><br><b>(a)</b> Show that the time of flight is approximately $3.0\\text{ s}$. <i>[2 marks]</i><br><b>(b)</b> Calculate the magnitude of the velocity vector upon impact. <i>[3 marks]</i>",
+    "choices": [],
+    "solution": "(a) $t = \\sqrt{2h/g} = \\sqrt{90/9.81} \\approx 3.03\\text{ s}$.<br>(b) $v_y = gt = 9.81(3.03) = 29.7\\text{ m s}^{-1}$. Total velocity $v = \\sqrt{25^2 + 29.7^2} \\approx 38.8\\text{ m s}^{-1}$."
+  },
+  {
+    "id": "A2-MC-001",
+    "theme": "Theme A",
+    "topic": "A.2 Forces and momentum",
+    "paper": "1A",
+    "level": "SL",
+    "marks": 1,
+    "text": "A block of mass $m$ rests on a rough horizontal surface. A horizontal force $F$ is applied, but the block remains stationary. What is the magnitude of the friction force acting on the block?",
+    "choices": [
+      "$\\mu_s mg$",
+      "$\\mu_d mg$",
+      "$F$",
+      "Zero"
+    ],
+    "solution": "C — Since the block remains at rest (static equilibrium), the net horizontal force is zero: $f_s = F$."
+  },
+  {
+    "id": "D1-STR-001",
+    "theme": "Theme D",
+    "topic": "D.1 Gravitational fields",
+    "paper": "2",
+    "level": "HL",
+    "marks": 6,
+    "text": "A satellite orbits a planet of mass $M$ in a circular path of radius $r$ with orbital period $T$.<br><br><b>(a)</b> Derive an expression for $T^2$ in terms of $G, M,$ and $r$. <i>[3 marks]</i><br><b>(b)</b> Explain why the gravitational force does no work on the satellite during this circular motion. <i>[3 marks]</i>",
+    "choices": [],
+    "solution": "(a) Gravitational force provides centripetal acceleration: $\\frac{GMm}{r^2} = m\\omega^2 r = m\\left(\\frac{2\\pi}{T}\\right)^2 r \\implies T^2 = \\frac{4\\pi^2 r^3}{GM}$.<br>(b) The gravitational force acts radially inwards while velocity is tangential ($F \\perp v$). Since $\\theta = 90^\\circ$, $W = Fd\\cos 90^\\circ = 0$."
+  }
+]
