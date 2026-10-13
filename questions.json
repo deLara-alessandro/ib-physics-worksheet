@@ -1,102 +1,15 @@
-[
-  {
-    "id": "A1-MC-001",
-    "topic": "A.1",
-    "paper": "1A",
-    "level": "SL",
-    "marks": 1,
-    "text": "An object is released from rest from the top of a building of height $h$. Air resistance is negligible. What is the speed of the object immediately before striking the ground?",
-    "choices": [
-      "$\\sqrt{gh}$",
-      "$\\sqrt{2gh}$",
-      "$2gh$",
-      "$gh^2$"
-    ],
-    "solution": "B — Using $v^2 = u^2 + 2as$ with $u = 0$ and $s = h \\implies v = \\sqrt{2gh}$."
-  },
-  {
-    "id": "A1-STR-001",
-    "topic": "A.1",
-    "paper": "1B",
-    "level": "HL",
-    "marks": 5,
-    "text": "A rescue package is dropped horizontally from an aircraft at speed $u = 25\\text{ m s}^{-1}$ from a height $h = 45\\text{ m}$.<br><br><b>(a)</b> Show that the time of flight is approximately $3.0\\text{ s}$. <i>[2 marks]</i><br><b>(b)</b> Calculate the magnitude of the velocity vector upon impact. <i>[3 marks]</i>",
-    "choices": [],
-    "solution": "(a) $t = \\sqrt{2h/g} = \\sqrt{90/9.81} \\approx 3.03\\text{ s}$.<br>(b) $v_y = gt = 9.81(3.03) = 29.7\\text{ m s}^{-1}$. Total velocity $v = \\sqrt{25^2 + 29.7^2} \\approx 38.8\\text{ m s}^{-1}$."
-  },
-  {
-    "id": "A2-MC-001",
-    "topic": "A.2",
-    "paper": "1A",
-    "level": "SL",
-    "marks": 1,
-    "text": "A block of mass $m$ rests on a rough horizontal surface. A horizontal force $F$ is applied, but the block remains stationary. What is the magnitude of the friction force acting on the block?",
-    "choices": [
-      "$\\mu_s mg$",
-      "$\\mu_d mg$",
-      "$F$",
-      "Zero"
-    ],
-    "solution": "C — Since the block remains at rest (static equilibrium), the net horizontal force is zero: $f_s = F$."
-  },
-  {
-    "id": "B3-MC-001",
-    "topic": "B.3",
-    "paper": "1A",
-    "level": "SL",
-    "marks": 1,
-    "text": "An ideal gas is held inside a sealed container of fixed volume $V$. The absolute temperature of the gas is doubled from $T$ to $2T$. What happens to the root-mean-square speed, $v_{\\text{rms}}$, of the gas molecules?",
-    "choices": [
-      "It remains unchanged",
-      "It increases by a factor of $\\sqrt{2}$",
-      "It doubles",
-      "It quadruples"
-    ],
-    "solution": "B — The average kinetic energy per molecule is $\\frac{1}{2}m v_{\\text{rms}}^2 = \\frac{3}{2}k_B T \\implies v_{\\text{rms}} \\propto \\sqrt{T}$. Doubling absolute temperature increases speed by a factor of $\\sqrt{2}$."
-  },
-  {
-    "id": "C1-STR-001",
-    "topic": "C.1",
-    "paper": "1B",
-    "level": "SL/HL",
-    "marks": 4,
-    "text": "A mass-spring oscillator executes simple harmonic motion along a horizontal surface with amplitude $A = 0.080\\text{ m}$ and angular frequency $\\omega = 12\\text{ rad s}^{-1}$.<br><br><b>(a)</b> Calculate the maximum acceleration $a_{\\text{max}}$ experienced by the oscillating mass. <i>[2 marks]</i><br><b>(b)</b> Determine the speed of the mass when its displacement from equilibrium is $x = 0.050\\text{ m}$. <i>[2 marks]</i>",
-    "choices": [],
-    "solution": "(a) $a_{\\text{max}} = \\omega^2 A = (12)^2 \\times 0.080 = 11.5\\text{ m s}^{-2}$.<br>(b) $v = \\omega \\sqrt{A^2 - x^2} = 12 \\sqrt{0.080^2 - 0.050^2} \\approx 0.75\\text{ m s}^{-1}$."
-  },
-  {
-    "id": "D1-STR-001",
-    "topic": "D.1",
-    "paper": "2",
-    "level": "HL",
-    "marks": 6,
-    "text": "A satellite orbits a planet of mass $M$ in a circular path of radius $r$ with orbital period $T$.<br><br><b>(a)</b> Derive an expression for $T^2$ in terms of $G, M,$ and $r$. <i>[3 marks]</i><br><b>(b)</b> Explain why the gravitational force does no work on the satellite during this circular motion. <i>[3 marks]</i>",
-    "choices": [],
-    "solution": "(a) Centripetal force equals gravitational force: $\\frac{GMm}{r^2} = m\\left(\\frac{2\\pi}{T}\\right)^2 r \\implies T^2 = \\frac{4\\pi^2 r^3}{GM}$.<br>(b) Gravitational force is perpendicular to instantaneous displacement ($F \\perp v$), so $W = Fd\\cos 90^\\circ = 0$."
-  },
-  {
-    "id": "D2-MC-001",
-    "topic": "D.2",
-    "paper": "1A",
-    "level": "HL",
-    "marks": 1,
-    "text": "A positively charged particle with charge $+q$ moves with constant speed $v$ into a uniform magnetic field $B$ directed perpendicular into the page. Which path describes the initial motion of the particle?",
-    "choices": [
-      "It deflects upwards following a parabolic trajectory",
-      "It deflects upwards following a circular arc",
-      "It deflects downwards following a circular arc",
-      "It continues in a straight line with increasing speed"
-    ],
-    "solution": "B — By the right-hand rule, $\\vec{F} = q(\\vec{v} \\times \\vec{B})$ provides a centripetal force directed upwards, resulting in a circular arc."
-  },
-  {
-    "id": "E3-STR-001",
-    "topic": "E.3",
-    "paper": "2",
-    "level": "SL/HL",
-    "marks": 5,
-    "text": "A sample contains $N_0 = 4.8 \\times 10^{18}$ nuclei of a radioactive isotope with a half-life of $T_{1/2} = 6.0\\text{ hours}$.<br><br><b>(a)</b> Show that the decay constant $\\lambda$ of this isotope is approximately $3.2 \\times 10^{-5}\\text{ s}^{-1}$. <i>[2 marks]</i><br><b>(b)</b> Calculate the initial activity $A_0$ of the sample in becquerels (Bq). <i>[2 marks]</i><br><b>(c)</b> State the number of undecayed nuclei remaining after $24\\text{ hours}$. <i>[1 mark]</i>",
-    "choices": [],
-    "solution": "(a) $\\lambda = \\frac{\\ln 2}{T_{1/2}} = \\frac{0.693}{21600\\text{ s}} \\approx 3.21 \\times 10^{-5}\\text{ s}^{-1}$.<br>(b) $A_0 = \\lambda N_0 = 3.21 \\times 10^{-5} \\times 4.8 \\times 10^{18} \\approx 1.54 \\times 10^{14}\\text{ Bq}$.<br>(c) $24\\text{ hours} = 4\\text{ half-lives} \\implies N = \\frac{N_0}{2^4} = 3.0 \\times 10^{17}$."
-  }
-]
+{
+  "id": "A1-MC-002",
+  "topic": "A.1",
+  "paper": "1A",
+  "level": "SL",
+  "marks": 1,
+  "text": "A car accelerates uniformly from rest to $20\\text{ m s}^{-1}$ in $5.0\\text{ s}$. What is the acceleration?",
+  "choices": [
+    "$2.0\\text{ m s}^{-2}$",
+    "$4.0\\text{ m s}^{-2}$",
+    "$10\\text{ m s}^{-2}$",
+    "$100\\text{ m s}^{-2}$"
+  ],
+  "solution": "B — $a = \\frac{v - u}{t} = \\frac{20 - 0}{5.0} = 4.0\\text{ m s}^{-2}$."
+}
