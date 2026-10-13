@@ -1,33 +1,41 @@
 // Complete 2025 IB Physics Syllabus Content Overview Dictionary
+const SYLLABUS_THEMES = [
+  { id: "A", name: "Theme A: Space, time and motion" },
+  { id: "B", name: "Theme B: Particulate nature of matter" },
+  { id: "C", name: "Theme C: Wave behaviour" },
+  { id: "D", name: "Theme D: Fields" },
+  { id: "E", name: "Theme E: Nuclear & quantum physics" }
+];
+
 const SYLLABUS_DB = {
-  // Theme A: Space, time and motion
+  // Theme A
   "A.1": { code: "A.1", themeLetter: "A", name: "Kinematics" },
   "A.2": { code: "A.2", themeLetter: "A", name: "Forces and momentum" },
   "A.3": { code: "A.3", themeLetter: "A", name: "Work, energy and power" },
   "A.4": { code: "A.4", themeLetter: "A", name: "Rigid body mechanics (HL)" },
   "A.5": { code: "A.5", themeLetter: "A", name: "Galilean and special relativity (HL)" },
 
-  // Theme B: The particulate nature of matter
+  // Theme B
   "B.1": { code: "B.1", themeLetter: "B", name: "Thermal energy transfers" },
   "B.2": { code: "B.2", themeLetter: "B", name: "Greenhouse effect" },
   "B.3": { code: "B.3", themeLetter: "B", name: "Gas laws" },
   "B.4": { code: "B.4", themeLetter: "B", name: "Thermodynamics (HL)" },
   "B.5": { code: "B.5", themeLetter: "B", name: "Current and circuits" },
 
-  // Theme C: Wave behaviour
+  // Theme C
   "C.1": { code: "C.1", themeLetter: "C", name: "Simple harmonic motion" },
   "C.2": { code: "C.2", themeLetter: "C", name: "Wave model" },
   "C.3": { code: "C.3", themeLetter: "C", name: "Wave phenomena" },
   "C.4": { code: "C.4", themeLetter: "C", name: "Standing waves and resonance" },
   "C.5": { code: "C.5", themeLetter: "C", name: "Doppler effect" },
 
-  // Theme D: Fields
+  // Theme D
   "D.1": { code: "D.1", themeLetter: "D", name: "Gravitational fields" },
   "D.2": { code: "D.2", themeLetter: "D", name: "Electric and magnetic fields" },
   "D.3": { code: "D.3", themeLetter: "D", name: "Motion in electromagnetic fields" },
   "D.4": { code: "D.4", themeLetter: "D", name: "Induction (HL)" },
 
-  // Theme E: Nuclear and quantum physics
+  // Theme E
   "E.1": { code: "E.1", themeLetter: "E", name: "Structure of the atom" },
   "E.2": { code: "E.2", themeLetter: "E", name: "Quantum physics (HL)" },
   "E.3": { code: "E.3", themeLetter: "E", name: "Radioactive decay" },
@@ -35,14 +43,15 @@ const SYLLABUS_DB = {
   "E.5": { code: "E.5", themeLetter: "E", name: "Fusion and stars" }
 };
 
-// Normalizes input: handles "A1", "a1", "A.1"
+// Tracks active topics for multi-select
+let activeTopics = new Set(Object.keys(SYLLABUS_DB));
+
 function resolveTopic(rawCode) {
   if (!rawCode) return { code: "General", themeLetter: "Other", name: "General Physics" };
   const cleaned = rawCode.trim().toUpperCase().replace(/^([A-E])(\d)$/, "$1.$2");
   return SYLLABUS_DB[cleaned] || { code: cleaned, themeLetter: cleaned.charAt(0), name: cleaned };
 }
 
-// Cleans multiple-choice options (strips duplicate "A.", "A)", etc.)
 function cleanChoiceText(text) {
   if (!text) return "";
   return text.trim().replace(/^[A-Da-d][\.\)]\s*/, "");
@@ -75,11 +84,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   selectedIds = new Set(questions.map(q => q.id));
   populateTopicModalDropdown();
-  onThemeFilterChange(); // Sets up Theme -> Topic -> Paper hierarchy on startup
+  buildSyllabusFilterTree();
+  renderQuestionList();
   renderWorksheet();
 });
 
-// Populates topic choices inside the "Add New Question" modal
+// Populates dropdown in the "+ New Question" modal
 function populateTopicModalDropdown() {
   const select = document.getElementById('newTopicCode');
   if (!select) return;
@@ -93,53 +103,102 @@ function populateTopicModalDropdown() {
   });
 }
 
-// Triggered when Theme filter changes: updates Topic dropdown strictly to that Theme
-function onThemeFilterChange() {
-  const selectedThemeLetter = document.getElementById('filterTheme').value;
-  const topicSelect = document.getElementById('filterTopic');
-  
-  // Reset topic dropdown
-  topicSelect.innerHTML = '<option value="ALL">All Topics</option>';
+// Builds the multi-select sidebar tree grouped by Theme
+function buildSyllabusFilterTree() {
+  const container = document.getElementById('syllabusTreeContainer');
+  if (!container) return;
+  container.innerHTML = '';
 
-  Object.keys(SYLLABUS_DB).forEach(key => {
-    const item = SYLLABUS_DB[key];
-    // Strict match: if Theme A is selected, ONLY show items where themeLetter === "A"
-    if (selectedThemeLetter === 'ALL' || item.themeLetter === selectedThemeLetter) {
-      const opt = document.createElement('option');
-      opt.value = item.code; // e.g. "A.1"
-      opt.innerText = `${item.code} ${item.name}`;
-      topicSelect.appendChild(opt);
-    }
+  SYLLABUS_THEMES.forEach(theme => {
+    const themeWrapper = document.createElement('div');
+    themeWrapper.style.marginBottom = '6px';
+
+    // Theme header with master checkbox
+    const themeHeader = document.createElement('div');
+    themeHeader.style.cssText = 'display:flex; align-items:center; gap:6px; font-weight:700; font-size:12px; color:#1e293b; background:#f8fafc; padding:3px 5px; border-radius:4px;';
+    themeHeader.innerHTML = `
+      <input type="checkbox" id="theme_chk_${theme.id}" checked onchange="toggleEntireTheme('${theme.id}', this.checked)">
+      <label for="theme_chk_${theme.id}" style="cursor:pointer; flex:1;">${theme.name}</label>
+    `;
+    themeWrapper.appendChild(themeHeader);
+
+    // Topic child checkboxes under this theme
+    const topicList = document.createElement('div');
+    topicList.style.cssText = 'padding-left:18px; margin-top:2px; display:flex; flex-direction:column; gap:2px;';
+
+    Object.keys(SYLLABUS_DB).forEach(key => {
+      const topic = SYLLABUS_DB[key];
+      if (topic.themeLetter === theme.id) {
+        const item = document.createElement('label');
+        item.style.cssText = 'font-size:11.5px; color:#334155; display:flex; align-items:center; gap:5px; cursor:pointer;';
+        item.innerHTML = `
+          <input type="checkbox" class="topic-checkbox" data-theme="${theme.id}" value="${topic.code}" checked onchange="onTopicCheckChange('${theme.id}', '${topic.code}', this.checked)">
+          <span><b>${topic.code}</b> ${topic.name}</span>
+        `;
+        topicList.appendChild(item);
+      }
+    });
+
+    themeWrapper.appendChild(topicList);
+    container.appendChild(themeWrapper);
   });
+}
+
+// Toggles all topics in a theme
+function toggleEntireTheme(themeId, isChecked) {
+  const checkboxes = document.querySelectorAll(`.topic-checkbox[data-theme="${themeId}"]`);
+  checkboxes.forEach(chk => {
+    chk.checked = isChecked;
+    if (isChecked) activeTopics.add(chk.value);
+    else activeTopics.delete(chk.value);
+  });
+  renderQuestionList();
+}
+
+// Toggles an individual topic and updates the parent theme checkbox
+function onTopicCheckChange(themeId, topicCode, isChecked) {
+  if (isChecked) activeTopics.add(topicCode);
+  else activeTopics.delete(topicCode);
+
+  const themeBoxes = Array.from(document.querySelectorAll(`.topic-checkbox[data-theme="${themeId}"]`));
+  const masterBox = document.getElementById(`theme_chk_${themeId}`);
+  if (masterBox) {
+    masterBox.checked = themeBoxes.some(chk => chk.checked);
+  }
 
   renderQuestionList();
 }
 
-// Filter the sidebar list: Theme -> Topic -> Paper
+// Select All / Clear All helper
+function selectAllFilters(selectState) {
+  activeTopics.clear();
+  document.querySelectorAll('.topic-checkbox').forEach(chk => {
+    chk.checked = selectState;
+    if (selectState) activeTopics.add(chk.value);
+  });
+  SYLLABUS_THEMES.forEach(t => {
+    const master = document.getElementById(`theme_chk_${t.id}`);
+    if (master) master.checked = selectState;
+  });
+  renderQuestionList();
+}
+
+// Filters the sidebar list against active topics and selected paper
 function renderQuestionList() {
-  const filterThemeLetter = document.getElementById('filterTheme').value;
-  const filterTopic = document.getElementById('filterTopic').value;
   const filterPaper = document.getElementById('filterPaper').value;
   const container = document.getElementById('qListContainer');
   container.innerHTML = '';
 
   const filtered = questions.filter(q => {
     const meta = resolveTopic(q.topic);
-    
-    // 1. Theme check
-    const matchesTheme = (filterThemeLetter === 'ALL' || meta.themeLetter === filterThemeLetter);
-    
-    // 2. Topic check
-    const matchesTopic = (filterTopic === 'ALL' || meta.code === filterTopic);
-    
-    // 3. Paper check
+    const matchesTopic = activeTopics.has(meta.code);
     const matchesPaper = (filterPaper === 'ALL' || q.paper === filterPaper);
 
-    return matchesTheme && matchesTopic && matchesPaper;
+    return matchesTopic && matchesPaper;
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px; margin-top:20px;">No questions found.</p>';
+    container.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px; margin-top:20px;">No questions match filter criteria.</p>';
     return;
   }
 
@@ -167,7 +226,7 @@ function toggleSelect(id) {
   renderWorksheet();
 }
 
-// Render printable A4 sheet
+// Render printable A4 worksheet
 function renderWorksheet() {
   const container = document.getElementById('worksheetQuestionsContainer');
   container.innerHTML = '';
