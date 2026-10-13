@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IB DP Physics Question Bank & Worksheet Generator</title>
 
-  <!-- KaTeX for rapid LaTeX Math rendering -->
+  <!-- KaTeX para renderização de fórmulas LaTeX -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
@@ -26,14 +26,13 @@
       color: #0f172a;
     }
 
-    /* Screen UI Layout */
     .app-container {
       display: flex;
       height: 100vh;
       overflow: hidden;
     }
 
-    /* Left Control Sidebar */
+    /* Barra lateral esquerda */
     .sidebar {
       width: 440px;
       background: #ffffff;
@@ -50,7 +49,7 @@
     }
 
     .btn {
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 6px;
       font-weight: 600;
       font-size: 13px;
@@ -65,13 +64,13 @@
     .btn-success { background: #16a34a; color: #fff; }
 
     .search-filter-box {
-      padding: 12px 16px;
+      padding: 10px 16px;
       border-bottom: 1px solid var(--border-line);
       display: flex;
       gap: 8px;
     }
-    .search-filter-box select, .search-filter-box input {
-      padding: 6px 10px;
+    .search-filter-box select {
+      padding: 6px 8px;
       border: 1px solid var(--border-line);
       border-radius: 6px;
       font-size: 13px;
@@ -93,55 +92,77 @@
       display: flex;
       gap: 10px;
       align-items: flex-start;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
     }
-    .q-bank-card:hover { border-color: var(--ib-blue); }
+    .q-bank-card:hover {
+      border-color: var(--ib-blue);
+      background: #f8fafc;
+    }
 
-    /* Right Preview Canvas */
+    /* Área de pré-visualização */
     .preview-canvas {
       flex: 1;
       overflow-y: auto;
-      padding: 40px 20px;
+      padding: 30px 20px;
       display: flex;
       justify-content: center;
     }
 
-    /* Standard A4 Worksheet Page */
+    /* Folha A4 padrão */
     .exam-sheet {
       width: 210mm;
       min-height: 297mm;
       background: #ffffff;
-      padding: 20mm;
+      padding: 0 20mm 20mm 20mm; /* topo zero para a imagem encostar */
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      border-radius: 2px;
+      position: relative;
     }
 
+    /* Imagem encostada no topo máximo (edge-to-edge) */
+    .header-banner {
+      margin-left: -20mm;
+      margin-right: -20mm;
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
     .header-banner img {
       width: 100%;
       height: auto;
       display: block;
-      margin-bottom: 12px;
     }
 
     .title-area {
       text-align: center;
       margin-bottom: 20px;
     }
-    .title-area h1 { margin: 0; font-size: 22px; }
-    .title-area h2 { margin: 4px 0; font-size: 17px; color: var(--ib-blue); }
-    .title-area p { margin: 2px 0; font-size: 12px; color: #64748b; }
+    .editable-field {
+      border: 1px dashed transparent;
+      padding: 2px 4px;
+      border-radius: 4px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .editable-field:hover, .editable-field:focus {
+      border-color: var(--ib-blue);
+      background: #f8fafc;
+    }
 
-    /* IB Styled Instruction Callout Box */
+    .title-area h1 { margin: 0; font-size: 24px; }
+    .title-area h2 { margin: 4px 0; font-size: 18px; color: var(--ib-blue); }
+    .title-area p { margin: 3px 0; font-size: 13px; color: #475569; }
+
     .instruction-box {
       background: #f7fafe;
       border: 1.5px solid var(--ib-blue);
       border-radius: 8px;
       padding: 12px 16px;
       margin-bottom: 24px;
-      font-size: 12px;
-      line-height: 1.45;
+      font-size: 12.5px;
+      line-height: 1.5;
     }
 
-    /* Worksheet Questions */
+    /* Questões na folha */
     .worksheet-q {
       margin-bottom: 26px;
       page-break-inside: avoid;
@@ -163,7 +184,6 @@
     .badge-level { background: #ebeef2; color: #334155; }
     .badge-paper { background: var(--ib-blue); color: #fff; }
 
-    /* Ruled lines for Paper 1B & Paper 2 */
     .answer-lines {
       width: 100%;
       border: 1px dashed #cbd5e1;
@@ -172,7 +192,7 @@
       border-radius: 4px;
     }
 
-    /* Modal for Adding Questions */
+    /* Modais */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
       display: none; align-items: center; justify-content: center; z-index: 1000;
@@ -181,20 +201,22 @@
       background: #fff; width: 620px; max-height: 90vh; overflow-y: auto;
       border-radius: 10px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
-    .form-group { margin-bottom: 14px; }
+    .form-group { margin-bottom: 12px; }
     .form-group label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; }
     .form-group input, .form-group select, .form-group textarea {
       width: 100%; padding: 8px; border: 1px solid var(--border-line);
       border-radius: 6px; font-size: 13px;
     }
 
-    /* Print Setup */
+    /* Regras de Impressão para PDF */
     @media print {
       body { background: #fff; }
       .sidebar, .modal-overlay { display: none !important; }
       .app-container { height: auto; display: block; }
       .preview-canvas { padding: 0; display: block; }
-      .exam-sheet { width: 100%; box-shadow: none; padding: 0; }
+      .exam-sheet { width: 100%; box-shadow: none; padding: 0 15mm 15mm 15mm; }
+      .header-banner { margin-left: -15mm; margin-right: -15mm; }
+      .editable-field { border: none !important; background: transparent !important; }
       .worksheet-q { page-break-inside: avoid; }
     }
   </style>
@@ -203,7 +225,7 @@
 
   <div class="app-container">
     
-    <!-- LEFT SIDEBAR -->
+    <!-- BARRA LATERAL -->
     <div class="sidebar">
       <div class="sidebar-header">
         <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -211,17 +233,17 @@
           <button class="btn btn-primary" onclick="window.print()">Print / PDF</button>
         </div>
         <div style="display:flex; gap:6px; margin-top:10px;">
-          <button class="btn btn-secondary" onclick="openAddModal()">+ New Question</button>
-          <button class="btn btn-secondary" onclick="exportJSON()">Export JSON</button>
-          <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">Import</button>
+          <button class="btn btn-secondary" onclick="openAddModal()">+ Nova Questão</button>
+          <button class="btn btn-secondary" onclick="exportJSON()">Exportar</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">Importar</button>
           <input type="file" id="importFile" style="display:none;" onchange="importJSON(event)">
         </div>
       </div>
 
-      <!-- FILTERS -->
+      <!-- FILTROS -->
       <div class="search-filter-box">
         <select id="filterTheme" onchange="renderQuestionList()" style="flex:1;">
-          <option value="ALL">All Themes</option>
+          <option value="ALL">Todos os Temas</option>
           <option value="Theme A">Theme A: Space, time and motion</option>
           <option value="Theme B">Theme B: Particulate nature of matter</option>
           <option value="Theme C">Theme C: Wave behaviour</option>
@@ -229,39 +251,39 @@
           <option value="Theme E">Theme E: Nuclear & quantum physics</option>
         </select>
         <select id="filterPaper" onchange="renderQuestionList()">
-          <option value="ALL">All Papers</option>
+          <option value="ALL">Todos os Papers</option>
           <option value="1A">Paper 1A</option>
           <option value="1B">Paper 1B</option>
           <option value="2">Paper 2</option>
         </select>
       </div>
 
-      <!-- SELECTION LIST -->
+      <!-- LISTAGEM -->
       <div class="question-list" id="qListContainer"></div>
     </div>
 
-    <!-- RIGHT PREVIEW -->
+    <!-- FOLHA A4 DE PRÉ-VISUALIZAÇÃO -->
     <div class="preview-canvas">
       <div class="exam-sheet">
         
-        <!-- HEADER GRAPHIC -->
+        <!-- CABEÇALHO NO TOPO MÁXIMO -->
         <div class="header-banner">
-          <img src="EARJ90_header.png" alt="School Banner" onerror="this.style.display='none'">
+          <img src="EARJ90_header.png" alt="EARJ Header" onerror="this.style.display='none'">
         </div>
 
         <div class="title-area">
-          <h1>Physics Problem Set</h1>
-          <h2 id="sheetTitleDisplay">Mechanics & Fields Review</h2>
-          <p>Updated: <span id="currentDate"></span></p>
-          <p>Physics SL &amp; HL &mdash; Science Department</p>
+          <h1 class="editable-field" contenteditable="true">Physics Problem Set</h1>
+          <h2 class="editable-field" contenteditable="true" id="sheetTitle">Mechanics & Fields Review</h2>
+          <p>Updated: <span class="editable-field" contenteditable="true" id="sheetDate">October 13th, 2026</span></p>
+          <p class="editable-field" contenteditable="true" id="sheetAuthor">Mr. Alessandro de Lara &mdash; Physics SL &amp; HL &mdash; Science Department</p>
         </div>
 
         <div class="instruction-box">
           <strong>Instructions & Guidelines:</strong>
           <ul style="margin: 4px 0 0 16px; padding: 0;">
-            <li>Refer to your <i>Physics Data Booklet</i> for relevant equations and constants.</li>
-            <li>Calculators are permitted for all components.</li>
-            <li>Show all algebraic steps, substitutions, and appropriate SI units.</li>
+            <li>Refer to your <i>Physics Data Booklet</i> for relevant equations and fundamental constants.</li>
+            <li>Calculators are permitted and encouraged for all sections.</li>
+            <li>Show all algebraic steps, full substitutions, and appropriate SI units clearly.</li>
           </ul>
         </div>
 
@@ -271,19 +293,33 @@
 
   </div>
 
-  <!-- ADD QUESTION MODAL -->
+  <!-- MODAL: VISUALIZADOR DA QUESTÃO (VIEWER) -->
+  <div class="modal-overlay" id="viewerModal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:8px; margin-bottom:12px;">
+        <h3 id="viewerTitle" style="margin:0; color:var(--ib-blue);">Detalhes da Questão</h3>
+        <button onclick="closeViewerModal()" style="border:none; background:none; font-size:18px; cursor:pointer;">&times;</button>
+      </div>
+      <div id="viewerBody"></div>
+      <div style="text-align:right; margin-top:16px;">
+        <button class="btn btn-secondary" onclick="closeViewerModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CRIAR NOVA QUESTÃO -->
   <div class="modal-overlay" id="addModal">
     <div class="modal-content">
-      <h3 style="margin-top:0; color:var(--ib-blue);">Add New IB Question</h3>
+      <h3 style="margin-top:0; color:var(--ib-blue);">Adicionar Questão IB</h3>
       
       <div class="form-group">
-        <label>Question ID</label>
-        <input type="text" id="newId" placeholder="e.g. A1-MC-002">
+        <label>ID da Questão</label>
+        <input type="text" id="newId" placeholder="ex: A1-MC-002">
       </div>
 
       <div style="display:flex; gap:10px;">
         <div class="form-group" style="flex:1;">
-          <label>Theme</label>
+          <label>Tema</label>
           <select id="newTheme">
             <option value="Theme A">Theme A: Space, time and motion</option>
             <option value="Theme B">Theme B: Particulate nature of matter</option>
@@ -293,22 +329,22 @@
           </select>
         </div>
         <div class="form-group" style="flex:1;">
-          <label>Topic Name</label>
-          <input type="text" id="newTopic" placeholder="e.g. A.1 Kinematics">
+          <label>Tópico</label>
+          <input type="text" id="newTopic" placeholder="ex: A.1 Kinematics">
         </div>
       </div>
 
       <div style="display:flex; gap:10px;">
         <div class="form-group" style="flex:1;">
-          <label>Paper Type</label>
+          <label>Paper</label>
           <select id="newPaper" onchange="toggleOptionFields()">
-            <option value="1A">Paper 1A (Multiple Choice)</option>
-            <option value="1B">Paper 1B (Data/Analysis)</option>
-            <option value="2">Paper 2 (Structured)</option>
+            <option value="1A">Paper 1A (Múltipla Escolha)</option>
+            <option value="1B">Paper 1B (Dados/Análise)</option>
+            <option value="2">Paper 2 (Estruturada)</option>
           </select>
         </div>
         <div class="form-group" style="flex:1;">
-          <label>Level</label>
+          <label>Nível</label>
           <select id="newLevel">
             <option value="SL">SL</option>
             <option value="HL">HL</option>
@@ -316,39 +352,37 @@
           </select>
         </div>
         <div class="form-group" style="flex:1;">
-          <label>Total Marks</label>
+          <label>Cotação Total</label>
           <input type="number" id="newMarks" value="1" min="1">
         </div>
       </div>
 
       <div class="form-group">
-        <label>Question Statement (Supports LaTeX $...$ or $$...$$)</label>
-        <textarea id="newText" rows="4" placeholder="An object moves with acceleration $a = 2.0\text{ m s}^{-2}$..."></textarea>
+        <label>Enunciado da Questão (Suporta LaTeX com $...$ ou $$...$$)</label>
+        <textarea id="newText" rows="4" placeholder="Um corpo move-se com aceleração $a = 2.0\text{ m s}^{-2}$..."></textarea>
       </div>
 
-      <!-- Multiple Choice Options -->
       <div id="mcOptionsGroup">
-        <label style="font-weight:600; font-size:13px; margin-bottom:4px; display:block;">Options (A, B, C, D)</label>
-        <div class="form-group"><input type="text" id="optA" placeholder="Option A"></div>
-        <div class="form-group"><input type="text" id="optB" placeholder="Option B"></div>
-        <div class="form-group"><input type="text" id="optC" placeholder="Option C"></div>
-        <div class="form-group"><input type="text" id="optD" placeholder="Option D"></div>
+        <label style="font-weight:600; font-size:13px; margin-bottom:4px; display:block;">Opções (A, B, C, D)</label>
+        <div class="form-group"><input type="text" id="optA" placeholder="Opção A"></div>
+        <div class="form-group"><input type="text" id="optB" placeholder="Opção B"></div>
+        <div class="form-group"><input type="text" id="optC" placeholder="Opção C"></div>
+        <div class="form-group"><input type="text" id="optD" placeholder="Opção D"></div>
       </div>
 
       <div class="form-group">
-        <label>Solution / Mark Scheme</label>
-        <textarea id="newSolution" rows="2" placeholder="Worked solution or answer letter..."></textarea>
+        <label>Resolução / Mark Scheme</label>
+        <textarea id="newSolution" rows="2" placeholder="Resolução detalhada ou alínea correta..."></textarea>
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-        <button class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
-        <button class="btn btn-success" onclick="saveNewQuestion()">Save Question</button>
+        <button class="btn btn-secondary" onclick="closeAddModal()">Cancelar</button>
+        <button class="btn btn-success" onclick="saveNewQuestion()">Guardar</button>
       </div>
     </div>
   </div>
 
   <script>
-    // DEFAULT SEED DATABASE
     const defaultDatabase = [
       {
         id: "A1-MC-001",
@@ -368,7 +402,7 @@
         paper: "1B",
         level: "HL",
         marks: 5,
-        text: "A rescue package is dropped horizontally from a plane at speed $u = 25\\text{ m s}^{-1}$ from a height $h = 45\\text{ m}$.<br><br><b>(a)</b> Show that the time of flight is approximately $3.0\\text{ s}$. <i>[2 marks]</i><br><b>(b)</b> Calculate the magnitude of the velocity vector upon impact. <i>[3 marks]</i>",
+        text: "A rescue package is dropped horizontally from an aircraft at speed $u = 25\\text{ m s}^{-1}$ from a height $h = 45\\text{ m}$.<br><br><b>(a)</b> Show that the time of flight is approximately $3.0\\text{ s}$. <i>[2 marks]</i><br><b>(b)</b> Calculate the magnitude of the velocity vector upon impact. <i>[3 marks]</i>",
         choices: [],
         solution: "(a) $t = \\sqrt{2h/g} = \\sqrt{90/9.81} \\approx 3.03\\text{ s}$.<br>(b) $v_y = gt = 9.81(3.03) = 29.7\\text{ m s}^{-1}$. $v = \\sqrt{25^2 + 29.7^2} \\approx 38.8\\text{ m s}^{-1}$."
       },
@@ -381,15 +415,12 @@
         marks: 6,
         text: "A satellite orbits a planet of mass $M$ in a circular orbit of radius $r$ with orbital period $T$.<br><br><b>(a)</b> Derive an expression for $T^2$ in terms of $G, M,$ and $r$. <i>[3 marks]</i><br><b>(b)</b> Explain why the gravitational force does no work on the satellite during this circular motion. <i>[3 marks]</i>",
         choices: [],
-        solution: "(a) $\\frac{GMm}{r^2} = m\\omega^2 r = m\\left(\\frac{2\\pi}{T}\\right)^2 r \\implies T^2 = \\frac{4\\pi^2 r^3}{GM}$.<br>(b) The force is perpendicular to the instantaneous displacement vector ($F \\perp v$), so $W = Fd\\cos 90^\\circ = 0$."
+        solution: "(a) $\\frac{GMm}{r^2} = m\\omega^2 r = m\\left(\\frac{2\\pi}{T}\\right)^2 r \\implies T^2 = \\frac{4\\pi^2 r^3}{GM}$.<br>(b) The force is perpendicular to the instantaneous velocity ($F \\perp v$), so $W = Fd\\cos 90^\\circ = 0$."
       }
     ];
 
-    // Load from localStorage or initialize defaults
     let questions = JSON.parse(localStorage.getItem('ib_qbank')) || defaultDatabase;
     let selectedIds = new Set(questions.map(q => q.id));
-
-    document.getElementById('currentDate').innerText = new Date().toLocaleDateString();
 
     function renderQuestionList() {
       const filterTheme = document.getElementById('filterTheme').value;
@@ -404,7 +435,7 @@
       });
 
       if (filtered.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px;">No questions match filter.</p>';
+        container.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px;">Nenhuma questão encontrada.</p>';
         return;
       }
 
@@ -412,8 +443,8 @@
         const card = document.createElement('div');
         card.className = 'q-bank-card';
         card.innerHTML = `
-          <input type="checkbox" ${selectedIds.has(q.id) ? 'checked' : ''} onchange="toggleSelect('${q.id}')">
-          <div style="flex:1; font-size:13px;">
+          <input type="checkbox" ${selectedIds.has(q.id) ? 'checked' : ''} onclick="event.stopPropagation(); toggleSelect('${q.id}')">
+          <div style="flex:1; font-size:13px;" onclick="openViewer('${q.id}')">
             <div style="display:flex; justify-content:space-between;">
               <strong>[${q.id}]</strong>
               <span style="color:#64748b;">${q.marks} mk</span>
@@ -452,7 +483,6 @@
 
         let answerBoxMarkup = '';
         if (q.paper !== '1A') {
-          // Approximate lined grid height based on marks (approx 25px per mark)
           const boxHeight = Math.max(70, q.marks * 25);
           answerBoxMarkup = `<div class="answer-lines" style="height:${boxHeight}px;"></div>`;
         }
@@ -480,7 +510,7 @@
 
     function renderMath() {
       if (window.renderMathInElement) {
-        renderMathInElement(document.getElementById('worksheetQuestionsContainer'), {
+        renderMathInElement(document.body, {
           delimiters: [
             { left: "$$", right: "$$", display: true },
             { left: "$", right: "$", display: false }
@@ -489,7 +519,45 @@
       }
     }
 
-    // Modal and Question Management
+    /* VISUALIZADOR DE QUESTÕES (VIEWER) */
+    function openViewer(id) {
+      const q = questions.find(item => item.id === id);
+      if (!q) return;
+
+      document.getElementById('viewerTitle').innerText = `[${q.id}] ${q.topic}`;
+      let choicesMarkup = '';
+      if (q.paper === '1A' && q.choices && q.choices.length > 0) {
+        const letters = ['A', 'B', 'C', 'D'];
+        choicesMarkup = '<div style="margin: 10px 0;"><strong>Opções:</strong><ul>' +
+          q.choices.map((c, i) => `<li><b>${letters[i]}.</b> ${c}</li>`).join('') +
+          '</ul></div>';
+      }
+
+      document.getElementById('viewerBody').innerHTML = `
+        <div style="margin-bottom: 12px;">
+          <span class="badge badge-level">${q.level}</span>
+          <span class="badge badge-paper">Paper ${q.paper}</span>
+          <span style="float:right; font-weight:bold;">${q.marks} Marks</span>
+        </div>
+        <div style="font-size:14px; line-height:1.5; margin-bottom:14px; background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #e2e8f0;">
+          <strong>Enunciado:</strong><br>${q.text}
+        </div>
+        ${choicesMarkup}
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:6px; font-size:13px;">
+          <strong style="color:#166534;">Critério de Correção / Solução:</strong><br>
+          ${q.solution || 'Sem solução registada.'}
+        </div>
+      `;
+
+      document.getElementById('viewerModal').style.display = 'flex';
+      renderMath();
+    }
+
+    function closeViewerModal() {
+      document.getElementById('viewerModal').style.display = 'none';
+    }
+
+    /* MODAL DE CRIAÇÃO */
     function openAddModal() {
       document.getElementById('addModal').style.display = 'flex';
     }
@@ -523,7 +591,7 @@
       }
 
       if (!text) {
-        alert("Please enter the question statement.");
+        alert("Por favor introduza o enunciado da questão.");
         return;
       }
 
@@ -537,7 +605,6 @@
       renderWorksheet();
     }
 
-    // JSON Export / Import
     function exportJSON() {
       const blob = new Blob([JSON.stringify(questions, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
@@ -559,16 +626,15 @@
             localStorage.setItem('ib_qbank', JSON.stringify(questions));
             renderQuestionList();
             renderWorksheet();
-            alert('Question bank imported successfully!');
+            alert('Banco de questões importado com sucesso!');
           }
         } catch(err) {
-          alert('Invalid JSON file format.');
+          alert('Ficheiro JSON inválido.');
         }
       };
       reader.readAsText(file);
     }
 
-    // Initial load 
     window.addEventListener('DOMContentLoaded', () => {
       renderQuestionList();
       renderWorksheet();
