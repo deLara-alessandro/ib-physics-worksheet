@@ -52,5 +52,59 @@
     "text": "A satellite orbits a planet of mass $M$ in a circular path of radius $r$ with orbital period $T$.<br><br><b>(a)</b> Derive an expression for $T^2$ in terms of $G, M,$ and $r$. <i>[3 marks]</i><br><b>(b)</b> Explain why the gravitational force does no work on the satellite during this circular motion. <i>[3 marks]</i>",
     "choices": [],
     "solution": "(a) Gravitational force provides centripetal acceleration: $\\frac{GMm}{r^2} = m\\omega^2 r = m\\left(\\frac{2\\pi}{T}\\right)^2 r \\implies T^2 = \\frac{4\\pi^2 r^3}{GM}$.<br>(b) The gravitational force acts radially inwards while velocity is tangential ($F \\perp v$). Since $\\theta = 90^\\circ$, $W = Fd\\cos 90^\\circ = 0$."
+  },
+  {
+    "id": "B3-MC-001",
+    "theme": "Theme B",
+    "topic": "B.3 Gas laws",
+    "paper": "1A",
+    "level": "SL",
+    "marks": 1,
+    "text": "An ideal gas is held inside a sealed container of fixed volume $V$. The absolute temperature of the gas is doubled from $T$ to $2T$. What happens to the root-mean-square speed, $v_{\\text{rms}}$, of the gas molecules?",
+    "choices": [
+      "It remains unchanged",
+      "It increases by a factor of $\\sqrt{2}$",
+      "It doubles",
+      "It quadruples"
+    ],
+    "solution": "B — The average kinetic energy per molecule is $\\frac{1}{2}m v_{\\text{rms}}^2 = \\frac{3}{2}k_B T \\implies v_{\\text{rms}} \\propto \\sqrt{T}$. Doubling absolute temperature increases speed by a factor of $\\sqrt{2}$."
+  },
+  {
+    "id": "C1-STR-001",
+    "theme": "Theme C",
+    "topic": "C.1 Simple harmonic motion",
+    "paper": "1B",
+    "level": "SL/HL",
+    "marks": 4,
+    "text": "A mass-spring oscillator executes simple harmonic motion along a horizontal surface with amplitude $A = 0.080\\text{ m}$ and angular frequency $\\omega = 12\\text{ rad s}^{-1}$.<br><br><b>(a)</b> Calculate the maximum acceleration $a_{\\text{max}}$ experienced by the oscillating mass. <i>[2 marks]</i><br><b>(b)</b> Determine the speed of the mass when its displacement from equilibrium is $x = 0.050\\text{ m}$. <i>[2 marks]</i>",
+    "choices": [],
+    "solution": "(a) $a_{\\text{max}} = \\omega^2 A = (12)^2 \\times 0.080 = 144 \\times 0.080 = 11.5\\text{ m s}^{-2}$.<br>(b) $v = \\omega \\sqrt{A^2 - x^2} = 12 \\sqrt{0.080^2 - 0.050^2} = 12 \\sqrt{0.0064 - 0.0025} = 12 \\sqrt{0.0039} \\approx 0.75\\text{ m s}^{-1}$."
+  },
+  {
+    "id": "D2-MC-001",
+    "theme": "Theme D",
+    "topic": "D.2 Electric and magnetic fields",
+    "paper": "1A",
+    "level": "HL",
+    "marks": 1,
+    "text": "A positively charged particle with charge $+q$ moves with constant speed $v$ into a uniform magnetic field $B$ directed perpendicular into the page. Which path describes the initial motion of the particle?",
+    "choices": [
+      "It deflects upwards following a parabolic trajectory",
+      "It deflects upwards following a circular arc",
+      "It deflects downwards following a circular arc",
+      "It continues in a straight line with increasing speed"
+    ],
+    "solution": "B — By the right-hand rule for the magnetic force $\\vec{F} = q(\\vec{v} \\times \\vec{B})$, a positive charge moving rightward in a field directed into the page experiences an upward force perpendicular to velocity, leading to circular motion at constant speed."
+  },
+  {
+    "id": "E3-STR-001",
+    "theme": "Theme E",
+    "topic": "E.3 Radioactive decay",
+    "paper": "2",
+    "level": "SL/HL",
+    "marks": 5,
+    "text": "A sample contains $N_0 = 4.8 \\times 10^{18}$ nuclei of a radioactive isotope with a half-life of $T_{1/2} = 6.0\\text{ hours}$.<br><br><b>(a)</b> Show that the decay constant $\\lambda$ of this isotope is approximately $3.2 \\times 10^{-5}\\text{ s}^{-1}$. <i>[2 marks]</i><br><b>(b)</b> Calculate the initial activity $A_0$ of the sample in becquerels (Bq). <i>[2 marks]</i><br><b>(c)</b> State the number of undecayed nuclei remaining after $24\\text{ hours}$. <i>[1 mark]</i>",
+    "choices": [],
+    "solution": "(a) $\\lambda = \\frac{\\ln 2}{T_{1/2}} = \\frac{0.693}{6.0 \\times 3600\\text{ s}} = \\frac{0.693}{21600} \\approx 3.21 \\times 10^{-5}\\text{ s}^{-1}$.<br>(b) $A_0 = \\lambda N_0 = (3.21 \\times 10^{-5}\\text{ s}^{-1})(4.8 \\times 10^{18}) \\approx 1.54 \\times 10^{14}\\text{ Bq}$.<br>(c) $24\\text{ hours} = 4\\text{ half-lives}$. $N = \\frac{N_0}{2^4} = \\frac{4.8 \\times 10^{18}}{16} = 3.0 \\times 10^{17}\\text{ nuclei}$."
   }
 ]
