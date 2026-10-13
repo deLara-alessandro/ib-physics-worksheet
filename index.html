@@ -38,16 +38,16 @@
         <div style="display:flex; gap:6px;">
           <select id="filterTheme" onchange="onThemeFilterChange()" style="flex:1;">
             <option value="ALL">All Themes</option>
-            <option value="Theme A">Theme A: Space, time and motion</option>
-            <option value="Theme B">Theme B: Particulate nature of matter</option>
-            <option value="Theme C">Theme C: Wave behaviour</option>
-            <option value="Theme D">Theme D: Fields</option>
-            <option value="Theme E">Theme E: Nuclear & quantum physics</option>
+            <option value="A">Theme A: Space, time and motion</option>
+            <option value="B">Theme B: Particulate nature of matter</option>
+            <option value="C">Theme C: Wave behaviour</option>
+            <option value="D">Theme D: Fields</option>
+            <option value="E">Theme E: Nuclear & quantum physics</option>
           </select>
         </div>
 
         <div style="display:flex; gap:6px;">
-          <!-- Step 2: Topic (Populated dynamically from selected Theme) -->
+          <!-- Step 2: Topic (Dynamically filtered by Theme) -->
           <select id="filterTopic" onchange="renderQuestionList()" style="flex:1;">
             <option value="ALL">All Topics</option>
           </select>
